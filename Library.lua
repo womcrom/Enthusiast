@@ -7116,7 +7116,7 @@ local Enthusiast do
                 Name = Data.Name or Data.name or "Enthusiast",
                 Logo = Data.Logo or Data.logo or "94551703190496",
                 FadeSpeed = Data.FadeSpeed or Data.fadespeed or 0.2,
-                Version = Data.Version or Data.version or "v1.0.0 alpha",
+                Version = Data.Version or Data.version or "v1.0.0",
                 Size = not IsMobile and UDim2New(0, 659, 0, 511) or UDim2New(0, 511, 0, 459),
 
                 Pages = { },
