@@ -1375,7 +1375,7 @@ local Enthusiast do
     Enthusiast = {
         Theme = nil,
 
-        MenuKeybind = tostring(Enum.KeyCode.Z), 
+        MenuKeybind = tostring(Enum.KeyCode.RightCtrl), 
         Flags = { },
 
         Tween = {
