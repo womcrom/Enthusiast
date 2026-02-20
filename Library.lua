@@ -1,7 +1,7 @@
 local LoadingTick = os.clock()
 
-if getgenv().Library then
-    getgenv().Library:Unload()
+if getgenv().Enthusiast then
+    getgenv().Enthusiast:Unload()
 end
 
 local ESPFonts = { }
@@ -50,7 +50,7 @@ local Options, MiscOptions do
         {"RightUpperLeg", "RightLowerLeg"},
     }
 
-    -- Esp is mainly hardcoded because having to make a library for everything is very useless considering we're working with not more than 10 elements at once. 
+    -- Esp is mainly hardcoded because having to make a Enthusiast for everything is very useless considering we're working with not more than 10 elements at once. 
     --[[
         PlayersTab.AddBar({Name = "Healthbar"})
         PlayersTab.AddText({Name = "Name"})
@@ -1303,7 +1303,7 @@ local Options, MiscOptions do
 end
 
 -- beware of somewhat horrible code
-local Library do
+local Enthusiast do
     -- Services
     local Players = game:GetService("Players")
     local UserInputService = game:GetService("UserInputService")
@@ -1371,8 +1371,8 @@ local Library do
 
     getgenv().Options = { }
 
-    -- Library
-    Library = {
+    -- Enthusiast
+    Enthusiast = {
         Theme = nil,
 
         MenuKeybind = tostring(Enum.KeyCode.Z), 
@@ -1503,25 +1503,25 @@ local Library do
         ["RightAlt"]          = "RightAlt"
     }
 
-    Library.__index = Library
+    Enthusiast.__index = Enthusiast
 
-    Library.Sections.__index = Library.Sections
-    Library.Pages.__index = Library.Pages
+    Enthusiast.Sections.__index = Enthusiast.Sections
+    Enthusiast.Pages.__index = Enthusiast.Pages
 
-    for Index, Value in Library.Folders do 
+    for Index, Value in Enthusiast.Folders do 
         if not isfolder(Value) then
             makefolder(Value)
         end
     end
 
-    for Index, Value in Library.Images do 
+    for Index, Value in Enthusiast.Images do 
         local ImageData = Value
 
         local ImageName = ImageData[1]
         local ImageLink = ImageData[2]
         
-        if not isfile(Library.Folders.Assets .. "/" .. ImageName) then
-            writefile(Library.Folders.Assets .. "/" .. ImageName, game:HttpGet(ImageLink))
+        if not isfile(Enthusiast.Folders.Assets .. "/" .. ImageName) then
+            writefile(Enthusiast.Folders.Assets .. "/" .. ImageName, game:HttpGet(ImageLink))
         end
     end
 
@@ -1530,7 +1530,7 @@ local Library do
 
         Tween.Create = function(self, Item, Info, Goal, IsRawItem)
             Item = IsRawItem and Item or Item.Instance
-            Info = Info or TweenInfo.new(Library.Tween.Time, Library.Tween.Style, Library.Tween.Direction)
+            Info = Info or TweenInfo.new(Enthusiast.Tween.Time, Enthusiast.Tween.Style, Enthusiast.Tween.Direction)
 
             local NewTween = {
                 Tween = TweenService:Create(Item, Info, Goal),
@@ -1570,11 +1570,11 @@ local Library do
             local OldTransparency = Item[Property]
             Item[Property] = Visibility and 1 or OldTransparency
 
-            local NewTween = Tween:Create(Item, TweenInfo.new(Speed or Library.Tween.Time, Library.Tween.Style, Library.Tween.Direction), {
+            local NewTween = Tween:Create(Item, TweenInfo.new(Speed or Enthusiast.Tween.Time, Enthusiast.Tween.Style, Enthusiast.Tween.Direction), {
                 [Property] = Visibility and OldTransparency or 1
             }, true)
 
-            Library:Connect(NewTween.Tween.Completed, function()
+            Enthusiast:Connect(NewTween.Tween.Completed, function()
                 if not Visibility then 
                     task.wait()
                     Item[Property] = OldTransparency
@@ -1645,7 +1645,7 @@ local Library do
             local Item = self.Instance
             local UIStroke = Instances:Create("UIStroke", {
                 Parent = Item,
-                Color = Library.Theme.Border,
+                Color = Enthusiast.Theme.Border,
                 Thickness = 1,
                 LineJoinMode = Enum.LineJoinMode.Miter
             })
@@ -1689,7 +1689,7 @@ local Library do
                 return
             end
 
-            Library:AddToTheme(self, Properties)
+            Enthusiast:AddToTheme(self, Properties)
         end
 
         Instances.ChangeItemTheme = function(self, Properties)
@@ -1697,7 +1697,7 @@ local Library do
                 return
             end
 
-            Library:ChangeItemTheme(self, Properties)
+            Enthusiast:ChangeItemTheme(self, Properties)
         end
 
         Instances.Connect = function(self, Event, Callback, Name)
@@ -1719,7 +1719,7 @@ local Library do
                 end
             end
 
-            return Library:Connect(self.Instance[Event], Callback, Name)
+            return Enthusiast:Connect(self.Instance[Event], Callback, Name)
         end
 
         Instances.Tween = function(self, Info, Goal)
@@ -1735,7 +1735,7 @@ local Library do
                 return
             end
 
-            return Library:Disconnect(Name)
+            return Enthusiast:Disconnect(Name)
         end
 
         Instances.Clean = function(self)
@@ -1762,7 +1762,7 @@ local Library do
             local RenderStepped
 
             local Newtooltip = Instances:Create("Frame", {
-                Parent = Library.Holder.Instance,
+                Parent = Enthusiast.Holder.Instance,
                 Name = "\0",
                 BorderColor3 = FromRGB(0, 0, 0),
                 BackgroundTransparency = 1,
@@ -1793,7 +1793,7 @@ local Library do
             local TooltipText = Instances:Create("TextLabel", {
                 Parent = Newtooltip.Instance,
                 Name = "\0",
-                FontFace = Library.Font,
+                FontFace = Enthusiast.Font,
                 TextColor3 = FromRGB(255, 255, 255),
                 BorderColor3 = FromRGB(0, 0, 0),
                 Text = Text,
@@ -1813,7 +1813,7 @@ local Library do
                 CornerRadius = UDimNew(0, 5)
             })
 
-            Library:Connect(Gui.MouseEnter, function()
+            Enthusiast:Connect(Gui.MouseEnter, function()
                 Newtooltip:Tween(nil, {BackgroundTransparency = 0.15})
                 TooltipText:Tween(nil, {TextTransparency = 0})
                 UIStroke:Tween(nil, {Transparency = 0.4})
@@ -1824,7 +1824,7 @@ local Library do
                 end)
             end)
 
-            Library:Connect(Gui.MouseLeave, function()
+            Enthusiast:Connect(Gui.MouseLeave, function()
                 Newtooltip:Tween(nil, {BackgroundTransparency = 1})
                 TooltipText:Tween(nil, {TextTransparency = 1})
                 UIStroke:Tween(nil, {Transparency = 1})
@@ -1876,7 +1876,7 @@ local Library do
                 end
             end)
 
-            Library:Connect(UserInputService.InputChanged, function(Input)
+            Enthusiast:Connect(UserInputService.InputChanged, function(Input)
                 if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
                     if Dragging then
                         Set(Input)
@@ -1938,7 +1938,7 @@ local Library do
                 end
             end)
 
-            Library:Connect(UserInputService.InputChanged, function(Input)
+            Enthusiast:Connect(UserInputService.InputChanged, function(Input)
                 if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
                     if Resizing then
                         ResizeMax = Maximum or Gui.Parent.AbsoluteSize - Gui.AbsoluteSize
@@ -1959,7 +1959,7 @@ local Library do
                 return
             end
             
-            return Library:Connect(self.Instance.MouseEnter, Function)
+            return Enthusiast:Connect(self.Instance.MouseEnter, Function)
         end
 
         Instances.OnHoverLeave = function(self, Function)
@@ -1967,18 +1967,18 @@ local Library do
                 return
             end
             
-            return Library:Connect(self.Instance.MouseLeave, Function)
+            return Enthusiast:Connect(self.Instance.MouseLeave, Function)
         end
     end
 
     local CustomFont = { } do
         function CustomFont:New(Name, Weight, Style, Data)
-            if isfile(Library.Folders.Assets .. "/" .. Name .. ".json") then
-                return Font.new(getcustomasset(Library.Folders.Assets .. "/" .. Name .. ".json"))
+            if isfile(Enthusiast.Folders.Assets .. "/" .. Name .. ".json") then
+                return Font.new(getcustomasset(Enthusiast.Folders.Assets .. "/" .. Name .. ".json"))
             end
 
-            if not isfile(Library.Folders.Assets .. "/" .. Name .. ".ttf") then 
-                writefile(Library.Folders.Assets .. "/" .. Name .. ".ttf", game:HttpGet(Data.Url))
+            if not isfile(Enthusiast.Folders.Assets .. "/" .. Name .. ".ttf") then 
+                writefile(Enthusiast.Folders.Assets .. "/" .. Name .. ".ttf", game:HttpGet(Data.Url))
             end
 
             local FontData = {
@@ -1987,17 +1987,17 @@ local Library do
                     name = "Regular",
                     weight = Weight,
                     style = Style,
-                    assetId = getcustomasset(Library.Folders.Assets .. "/" .. Name .. ".ttf")
+                    assetId = getcustomasset(Enthusiast.Folders.Assets .. "/" .. Name .. ".ttf")
                 } }
             }
 
-            writefile(Library.Folders.Assets .. "/" .. Name .. ".json", HttpService:JSONEncode(FontData))
-            return Font.new(getcustomasset(Library.Folders.Assets .. "/" .. Name .. ".json"))
+            writefile(Enthusiast.Folders.Assets .. "/" .. Name .. ".json", HttpService:JSONEncode(FontData))
+            return Font.new(getcustomasset(Enthusiast.Folders.Assets .. "/" .. Name .. ".json"))
         end
 
         function CustomFont:Get(Name)
-            if isfile(Library.Folders.Assets .. "/" .. Name .. ".json") then
-                return Font.new(getcustomasset(Library.Folders.Assets .. "/" .. Name .. ".json"))
+            if isfile(Enthusiast.Folders.Assets .. "/" .. Name .. ".json") then
+                return Font.new(getcustomasset(Enthusiast.Folders.Assets .. "/" .. Name .. ".json"))
             end
         end
 
@@ -2005,7 +2005,7 @@ local Library do
             Url = "https://github.com/womcrom/Fonts/raw/refs/heads/main/InterSemibold.ttf"
         })
 
-        Library.Font = CustomFont:Get("Inter")
+        Enthusiast.Font = CustomFont:Get("Inter")
     end
 
     local Themes = {
@@ -2062,18 +2062,18 @@ local Library do
         },
     }
 
-    Library.Theme = TableClone(Themes["Preset"])
-    Library.Themes = Themes
+    Enthusiast.Theme = TableClone(Themes["Preset"])
+    Enthusiast.Themes = Themes
 
-    if not isfile(Library.Folders.Directory .. "/AutoLoadConfig (do not modify this).json") then
-        writefile(Library.Folders.Directory .. "/AutoLoadConfig (do not modify this).json", "")
+    if not isfile(Enthusiast.Folders.Directory .. "/AutoLoadConfig (do not modify this).json") then
+        writefile(Enthusiast.Folders.Directory .. "/AutoLoadConfig (do not modify this).json", "")
     end
 
-    if not isfile(Library.Folders.Directory .. "/AutoLoadTheme (do not modify this).json") then
-        writefile(Library.Folders.Directory .. "/AutoLoadTheme (do not modify this).json", "")
+    if not isfile(Enthusiast.Folders.Directory .. "/AutoLoadTheme (do not modify this).json") then
+        writefile(Enthusiast.Folders.Directory .. "/AutoLoadTheme (do not modify this).json", "")
     end
 
-    Library.Holder = Instances:Create("ScreenGui", {
+    Enthusiast.Holder = Instances:Create("ScreenGui", {
         Parent = game:GetService("CoreGui"),
         Name = "\0",
         ZIndexBehavior = Enum.ZIndexBehavior.Global,
@@ -2081,7 +2081,7 @@ local Library do
         ResetOnSpawn = false
     })
 
-    Library.UnusedHolder = Instances:Create("ScreenGui", {
+    Enthusiast.UnusedHolder = Instances:Create("ScreenGui", {
         Parent = gethui(),
         Name = "\0",
         ZIndexBehavior = Enum.ZIndexBehavior.Global,
@@ -2089,8 +2089,8 @@ local Library do
         ResetOnSpawn = false
     })
 
-    Library.NotifHolder = Instances:Create("Frame", {
-        Parent = Library.Holder.Instance,
+    Enthusiast.NotifHolder = Instances:Create("Frame", {
+        Parent = Enthusiast.Holder.Instance,
         Name = "\0",
         BorderColor3 = FromRGB(0, 0, 0),
         AnchorPoint = Vector2New(1, 0),
@@ -2103,7 +2103,7 @@ local Library do
     })
 
     Instances:Create("UIPadding", {
-        Parent = Library.NotifHolder.Instance,
+        Parent = Enthusiast.NotifHolder.Instance,
         Name = "\0",
         PaddingBottom = UDimNew(0, 15),
         PaddingTop = UDimNew(0, 15),
@@ -2111,14 +2111,14 @@ local Library do
     })
 
     Instances:Create("UIListLayout", {
-        Parent = Library.NotifHolder.Instance,
+        Parent = Enthusiast.NotifHolder.Instance,
         Name = "\0",
         SortOrder = Enum.SortOrder.LayoutOrder,
         HorizontalAlignment = Enum.HorizontalAlignment.Right,
         Padding = UDimNew(0, 10)
     })
 
-    Library.Unload = function(self)
+    Enthusiast.Unload = function(self)
         for Index, Value in self.Connections do 
             Value.Connection:Disconnect()
         end
@@ -2131,13 +2131,13 @@ local Library do
             self.Holder:Clean()
         end
 
-        Library = nil 
-        getgenv().Library = nil
+        Enthusiast = nil 
+        getgenv().Enthusiast = nil
 
         UserInputService.MouseIconEnabled = true
     end
 
-    Library.GetImage = function(self, Image)
+    Enthusiast.GetImage = function(self, Image)
         local ImageData = self.Images[Image]
 
         if not ImageData then 
@@ -2147,12 +2147,12 @@ local Library do
         return getcustomasset(self.Folders.Assets .. "/" .. ImageData[1])
     end
 
-    Library.Round = function(self, Number, Float)
+    Enthusiast.Round = function(self, Number, Float)
         local Multiplier = 1 / (Float or 1)
         return MathFloor(Number * Multiplier) / Multiplier
     end
 
-    Library.Thread = function(self, Function)
+    Enthusiast.Thread = function(self, Function)
         local NewThread = coroutine.create(Function)
         
         coroutine.wrap(function()
@@ -2164,12 +2164,12 @@ local Library do
         return NewThread
     end
     
-    Library.SafeCall = function(self, Function, ...)
+    Enthusiast.SafeCall = function(self, Function, ...)
         local Arguements = { ... }
         local Success, Result = pcall(Function, TableUnpack(Arguements))
 
         if not Success then
-            --Library:Notification("Error caught in function, report this to the devs:\n"..Result, 5, FromRGB(255, 0, 0))
+            --Enthusiast:Notification("Error caught in function, report this to the devs:\n"..Result, 5, FromRGB(255, 0, 0))
             warn(Result)
             return false
         end
@@ -2177,7 +2177,7 @@ local Library do
         return Success
     end
 
-    Library.Connect = function(self, Event, Callback, Name)
+    Enthusiast.Connect = function(self, Event, Callback, Name)
         Name = Name or StringFormat("Connection%s%s", self.UnnamedConnections + 1, HttpService:GenerateGUID(false))
 
         local NewConnection = {
@@ -2187,7 +2187,7 @@ local Library do
             Connection = nil
         }
 
-        Library:Thread(function()
+        Enthusiast:Thread(function()
             NewConnection.Connection = Event:Connect(Callback)
         end)
 
@@ -2195,7 +2195,7 @@ local Library do
         return NewConnection
     end
 
-    Library.Disconnect = function(self, Name)
+    Enthusiast.Disconnect = function(self, Name)
         for _, Connection in self.Connections do 
             if Connection.Name == Name then
                 Connection.Connection:Disconnect()
@@ -2204,12 +2204,12 @@ local Library do
         end
     end
 
-    Library.NextFlag = function(self)
+    Enthusiast.NextFlag = function(self)
         local FlagNumber = self.UnnamedFlags + 1
         return StringFormat("Flag Number %s %s", FlagNumber, HttpService:GenerateGUID(false))
     end
 
-    Library.AddToTheme = function(self, Item, Properties)
+    Enthusiast.AddToTheme = function(self, Item, Properties)
         Item = Item.Instance or Item 
 
         local ThemeData = {
@@ -2229,11 +2229,11 @@ local Library do
         self.ThemeMap[Item] = ThemeData
     end
 
-    Library.GetConfig = function(self)
+    Enthusiast.GetConfig = function(self)
         local Config = { } 
 
-        local Success, Result = Library:SafeCall(function()
-            for Index, Value in Library.Flags do 
+        local Success, Result = Enthusiast:SafeCall(function()
+            for Index, Value in Enthusiast.Flags do 
                 if type(Value) == "table" and Value.Key then
                     Config[Index] = {Key = tostring(Value.Key), Mode = Value.Mode}
                 elseif type(Value) == "table" and Value.Color then
@@ -2247,12 +2247,12 @@ local Library do
         return HttpService:JSONEncode(Config)
     end
 
-    Library.LoadConfig = function(self, Config)
+    Enthusiast.LoadConfig = function(self, Config)
         local Decoded = HttpService:JSONDecode(Config)
 
-        local Success, Result = Library:SafeCall(function()
+        local Success, Result = Enthusiast:SafeCall(function()
             for Index, Value in Decoded do 
-                local SetFunction = Library.SetFlags[Index]
+                local SetFunction = Enthusiast.SetFlags[Index]
 
                 if not SetFunction then
                     continue
@@ -2271,15 +2271,15 @@ local Library do
         return Success, Result
     end
 
-    Library.GetDarkerColor = function(self, Color)
+    Enthusiast.GetDarkerColor = function(self, Color)
         local Hue, Saturation, Value = Color:ToHSV()
         return FromHSV(Hue, Saturation, Value / 1.35)
     end
 
-    Library.DeleteConfig = function(self, Config)
-        if isfile(Library.Folders.Configs .. "/" .. Config) then 
-            delfile(Library.Folders.Configs .. "/" .. Config)
-            Library:Notification({
+    Enthusiast.DeleteConfig = function(self, Config)
+        if isfile(Enthusiast.Folders.Configs .. "/" .. Config) then 
+            delfile(Enthusiast.Folders.Configs .. "/" .. Config)
+            Enthusiast:Notification({
                 Name = "Success",
                 Description = "Succesfully deleted config: ".. Config .. ".json",
                 Duration = 5,
@@ -2289,10 +2289,10 @@ local Library do
         end
     end
 
-    Library.SaveConfig = function(self, Config)
-        if isfile(Library.Folders.Configs .. "/" .. Config .. ".json") then
-            writefile(Library.Folders.Configs .. "/" .. Config .. ".json", Library:GetConfig())
-            Library:Notification({
+    Enthusiast.SaveConfig = function(self, Config)
+        if isfile(Enthusiast.Folders.Configs .. "/" .. Config .. ".json") then
+            writefile(Enthusiast.Folders.Configs .. "/" .. Config .. ".json", Enthusiast:GetConfig())
+            Enthusiast:Notification({
                 Name = "Success",
                 Description = "Succesfully saved config: ".. Config .. ".json",
                 Duration = 5,
@@ -2302,14 +2302,14 @@ local Library do
         end
     end
 
-    Library.RefreshConfigsList = function(self, Element)
+    Enthusiast.RefreshConfigsList = function(self, Element)
         local CurrentList = { }
         local List = { }
 
-        local ConfigFolderName = StringGSub(Library.Folders.Configs, Library.Folders.Directory .. "/", "")
+        local ConfigFolderName = StringGSub(Enthusiast.Folders.Configs, Enthusiast.Folders.Directory .. "/", "")
 
-        for Index, Value in listfiles(Library.Folders.Configs) do
-            local FileName = StringGSub(Value, Library.Folders.Directory .. "\\" .. ConfigFolderName .. "\\", "")
+        for Index, Value in listfiles(Enthusiast.Folders.Configs) do
+            local FileName = StringGSub(Value, Enthusiast.Folders.Directory .. "\\" .. ConfigFolderName .. "\\", "")
             List[Index] = FileName
         end
 
@@ -2328,7 +2328,7 @@ local Library do
         end
     end
 
-    Library.ChangeItemTheme = function(self, Item, Properties)
+    Enthusiast.ChangeItemTheme = function(self, Item, Properties)
         Item = Item.Instance or Item
 
         if not self.ThemeMap[Item] then 
@@ -2339,7 +2339,7 @@ local Library do
         self.ThemeMap[Item] = self.ThemeMap[Item]
     end
 
-    Library.ChangeTheme = function(self, Theme, Color)
+    Enthusiast.ChangeTheme = function(self, Theme, Color)
         self.Theme[Theme] = Color
 
         for _, Item in self.ThemeItems do
@@ -2353,7 +2353,7 @@ local Library do
         end
     end
 
-    Library.IsMouseOverFrame = function(self, Frame, XOffset, YOffset)
+    Enthusiast.IsMouseOverFrame = function(self, Frame, XOffset, YOffset)
         Frame = Frame.Instance
         XOffset = XOffset or 0 
         YOffset = YOffset or 0
@@ -2364,11 +2364,11 @@ local Library do
         and MousePosition.Y >= Frame.AbsolutePosition.Y and MousePosition.Y <= Frame.AbsolutePosition.Y + Frame.AbsoluteSize.Y
     end
 
-    Library.GetTheme = function(self)
+    Enthusiast.GetTheme = function(self)
         local Config = { } 
 
-        local Success, Result = Library:SafeCall(function()
-            for Index, Value in Library.Flags do 
+        local Success, Result = Enthusiast:SafeCall(function()
+            for Index, Value in Enthusiast.Flags do 
                 if type(Value) == "table" and Value.Color and StringFind(Index, "Theme") then
                     Config[Index] = {Color = "#" .. Value.Color, Alpha = Value.Alpha}
                 end
@@ -2378,12 +2378,12 @@ local Library do
         return HttpService:JSONEncode(Config)
     end
 
-    Library.LoadTheme = function(self, Config)
+    Enthusiast.LoadTheme = function(self, Config)
         local Decoded = HttpService:JSONDecode(Config)
 
-        local Success, Result = Library:SafeCall(function()
+        local Success, Result = Enthusiast:SafeCall(function()
             for Index, Value in Decoded do 
-                local SetFunction = Library.SetFlags[Index]
+                local SetFunction = Enthusiast.SetFlags[Index]
 
                 if not SetFunction then
                     continue
@@ -2398,10 +2398,10 @@ local Library do
         return Success, Result
     end
 
-    Library.DeleteTheme = function(self, Config)
-        if isfile(Library.Folders.Themes .. "/" .. Config) then 
-            delfile(Library.Folders.Themes .. "/" .. Config)
-            Library:Notification({
+    Enthusiast.DeleteTheme = function(self, Config)
+        if isfile(Enthusiast.Folders.Themes .. "/" .. Config) then 
+            delfile(Enthusiast.Folders.Themes .. "/" .. Config)
+            Enthusiast:Notification({
                 Name = "Success",
                 Description = "Succesfully deleted config: ".. Config .. ".json",
                 Duration = 5,
@@ -2411,10 +2411,10 @@ local Library do
         end
     end
 
-    Library.SaveTheme = function(self, Config)
-        if isfile(Library.Folders.Themes .. "/" .. Config .. ".json") then
-            writefile(Library.Folders.Themes .. "/" .. Config .. ".json", Library:GetTheme())
-            Library:Notification({
+    Enthusiast.SaveTheme = function(self, Config)
+        if isfile(Enthusiast.Folders.Themes .. "/" .. Config .. ".json") then
+            writefile(Enthusiast.Folders.Themes .. "/" .. Config .. ".json", Enthusiast:GetTheme())
+            Enthusiast:Notification({
                 Name = "Success",
                 Description = "Succesfully saved config: ".. Config .. ".json",
                 Duration = 5,
@@ -2424,14 +2424,14 @@ local Library do
         end
     end
 
-    Library.RefreshThemesList = function(self, Element)
+    Enthusiast.RefreshThemesList = function(self, Element)
         local CurrentList = { }
         local List = { }
 
-        local ConfigFolderName = StringGSub(Library.Folders.Themes, Library.Folders.Directory .. "/", "")
+        local ConfigFolderName = StringGSub(Enthusiast.Folders.Themes, Enthusiast.Folders.Directory .. "/", "")
 
-        for Index, Value in listfiles(Library.Folders.Themes) do
-            local FileName = StringGSub(Value, Library.Folders.Directory .. "\\" .. ConfigFolderName .. "\\", "")
+        for Index, Value in listfiles(Enthusiast.Folders.Themes) do
+            local FileName = StringGSub(Value, Enthusiast.Folders.Directory .. "\\" .. ConfigFolderName .. "\\", "")
             List[Index] = FileName
         end
 
@@ -2450,7 +2450,7 @@ local Library do
         end
     end
 
-    Library.GetLighterColor = function(self, Color, Increment)
+    Enthusiast.GetLighterColor = function(self, Color, Increment)
         local Hue, Saturation, Value = Color:ToHSV()
         return FromHSV(Hue, Saturation, Value * Increment)
     end
@@ -2466,7 +2466,7 @@ local Library do
                 Items["Toggle"] = Instances:Create("TextButton", {
                     Parent = Data.Parent.Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -2482,7 +2482,7 @@ local Library do
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["Toggle"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     TextTransparency = 0.5,
                     Text = Data.Name,
@@ -2539,7 +2539,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Items["Check"] = Instances:Create("ImageLabel", {
@@ -2590,14 +2590,14 @@ local Library do
 
             function Toggle:Set(Bool)
                 Toggle.Value = Bool 
-                Library.Flags[Toggle.Flag] = Bool
+                Enthusiast.Flags[Toggle.Flag] = Bool
 
                 if Bool then
                     Items["Indicator"]:ChangeItemTheme({BackgroundColor3 = "Accent"})
                     Items["Inline"]:ChangeItemTheme({BackgroundColor3 = "Accent"})
 
-                    Items["Indicator"]:Tween(nil, {BackgroundColor3 = Library.Theme.Accent})
-                    Items["Inline"]:Tween(nil, {BackgroundColor3 = Library.Theme.Accent})
+                    Items["Indicator"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Accent})
+                    Items["Inline"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Accent})
 
                     Items["Check"]:Tween(nil, {ImageTransparency = 0})
                     Items["Text"]:Tween(nil, {TextTransparency = 0})
@@ -2605,15 +2605,15 @@ local Library do
                     Items["Indicator"]:ChangeItemTheme({BackgroundColor3 = "Element"})
                     Items["Inline"]:ChangeItemTheme({BackgroundColor3 = "Element"})
 
-                    Items["Indicator"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
-                    Items["Inline"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                    Items["Indicator"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
+                    Items["Inline"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
 
                     Items["Check"]:Tween(nil, {ImageTransparency = 1})
                     Items["Text"]:Tween(nil, {TextTransparency = 0.5})
                 end
 
                 if Data.Callback then 
-                    Library:SafeCall(Data.Callback, Bool)
+                    Enthusiast:SafeCall(Data.Callback, Bool)
                 end
             end
 
@@ -2623,14 +2623,14 @@ local Library do
 
             Items["Toggle"]:OnHover(function()
                 if Toggle.Value then return end
-                Items["Indicator"]:Tween(nil, {BackgroundColor3 = Library:GetLighterColor(Library.Theme.Element, 1.45)})
-                Items["Inline"]:Tween(nil, {BackgroundColor3 = Library:GetLighterColor(Library.Theme.Element, 1.45)})
+                Items["Indicator"]:Tween(nil, {BackgroundColor3 = Enthusiast:GetLighterColor(Enthusiast.Theme.Element, 1.45)})
+                Items["Inline"]:Tween(nil, {BackgroundColor3 = Enthusiast:GetLighterColor(Enthusiast.Theme.Element, 1.45)})
             end)
 
             Items["Toggle"]:OnHoverLeave(function()
                 if Toggle.Value then return end
-                Items["Indicator"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
-                Items["Inline"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                Items["Indicator"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
+                Items["Inline"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
             end)
 
             getgenv().Options[Toggle.Flag] = Toggle
@@ -2640,7 +2640,7 @@ local Library do
                 Item = Items["Toggle"]
             }
 
-            local PageSearchData = Library.SearchItems[Data.Page]
+            local PageSearchData = Enthusiast.SearchItems[Data.Page]
 
             if not PageSearchData then 
                 return 
@@ -2656,7 +2656,7 @@ local Library do
                 Toggle:Set(Data.Default)
             end
 
-            Library.SetFlags[Toggle.Flag] = function(Value)
+            Enthusiast.SetFlags[Toggle.Flag] = function(Value)
                 Toggle:Set(Value)
             end
 
@@ -2688,7 +2688,7 @@ local Library do
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["Dropdown"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = Data.Name,
@@ -2721,7 +2721,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Instances:Create("UICorner", {
@@ -2733,7 +2733,7 @@ local Library do
                 Items["Value"] = Instances:Create("TextLabel", {
                     Parent = Items["RealDropdown"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "--",
@@ -2766,9 +2766,9 @@ local Library do
                 })  Items["OpenIcon"]:AddToTheme({ImageColor3 = "Accent"})
 
                 Items["OptionHolder"] = Instances:Create("TextButton", {
-                    Parent = Library.UnusedHolder.Instance,
+                    Parent = Enthusiast.UnusedHolder.Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -2789,7 +2789,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Instances:Create("UIStroke", {
@@ -2818,7 +2818,7 @@ local Library do
                     BackgroundTransparency = 1,
                     Position = UDim2New(0, 0, 0, 38),
                     BorderSizePixel = 0,
-                    ScrollBarImageColor3 = Library.Theme.Border,
+                    ScrollBarImageColor3 = Enthusiast.Theme.Border,
                     BottomImage = "rbxassetid://123813291349824",
                     TopImage = "rbxassetid://123813291349824",
                     MidImage = "rbxassetid://123813291349824",
@@ -2859,7 +2859,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Instances:Create("UICorner", {
@@ -2895,7 +2895,7 @@ local Library do
                 Items["Input"] = Instances:Create("TextBox", {
                     Parent = Items["Search"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     AnchorPoint = Vector2New(0, 0.5),
                     PlaceholderColor3 = FromRGB(185, 185, 185),
                     PlaceholderText = "search",
@@ -2916,11 +2916,11 @@ local Library do
             end
 
             Items["RealDropdown"]:OnHover(function()
-                Items["RealDropdown"]:Tween(nil, {BackgroundColor3 = Library:GetLighterColor(Library.Theme.Element, 1.45)})
+                Items["RealDropdown"]:Tween(nil, {BackgroundColor3 = Enthusiast:GetLighterColor(Enthusiast.Theme.Element, 1.45)})
             end)
 
             Items["RealDropdown"]:OnHoverLeave(function()
-                Items["RealDropdown"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                Items["RealDropdown"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
             end)
 
             function Dropdown:Get()
@@ -2934,7 +2934,7 @@ local Library do
                     end
 
                     Dropdown.Value = Option
-                    Library.Flags[Dropdown.Flag] = Option
+                    Enthusiast.Flags[Dropdown.Flag] = Option
 
                     for Index, Value in Option do 
                         local OptionData = Dropdown.Options[Value]
@@ -2956,7 +2956,7 @@ local Library do
                     local OptionData = Dropdown.Options[Option]
 
                     Dropdown.Value = OptionData.Name
-                    Library.Flags[Dropdown.Flag] = OptionData.Name
+                    Enthusiast.Flags[Dropdown.Flag] = OptionData.Name
 
                     for Index, Value in Dropdown.Options do 
                         if Value ~= OptionData then
@@ -2972,7 +2972,7 @@ local Library do
                 end
 
                 if Data.Callback then 
-                    Library:SafeCall(Data.Callback, Dropdown.Value)
+                    Enthusiast:SafeCall(Data.Callback, Dropdown.Value)
                 end
             end
 
@@ -2980,7 +2980,7 @@ local Library do
                 local OptionButton = Instances:Create("TextButton", {
                     Parent = Items["Holder"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -3020,7 +3020,7 @@ local Library do
                 local OptionText = Instances:Create("TextLabel", {
                     Parent = OptionButton.Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextTransparency = 0.5,
                     AnchorPoint = Vector2New(0, 0.5),
                     ZIndex = 5,
@@ -3087,7 +3087,7 @@ local Library do
                             TableInsert(Dropdown.Value, OptionData.RealName)
                         end
 
-                        Library.Flags[Dropdown.Flag] = Dropdown.Value
+                        Enthusiast.Flags[Dropdown.Flag] = Dropdown.Value
 
                         OptionData:Toggle(Index and "Inactive" or "Active")
 
@@ -3097,7 +3097,7 @@ local Library do
                     else
                         if OptionData.Selected then 
                             Dropdown.Value = OptionData.RealName
-                            Library.Flags[Dropdown.Flag] = OptionData.RealName
+                            Enthusiast.Flags[Dropdown.Flag] = OptionData.RealName
 
                             OptionData:Toggle("Active")
 
@@ -3111,7 +3111,7 @@ local Library do
                             Items["Value"].Instance.Text = OptionData.RealName 
                         else
                             Dropdown.Value = nil
-                            Library.Flags[Dropdown.Flag] = nil
+                            Enthusiast.Flags[Dropdown.Flag] = nil
 
                             OptionData:Toggle("Inactive")
                             Items["Value"].Instance.Text = "--"
@@ -3119,7 +3119,7 @@ local Library do
                     end
 
                     if Data.Callback then 
-                        Library:SafeCall(Data.Callback, Dropdown.Value)
+                        Enthusiast:SafeCall(Data.Callback, Dropdown.Value)
                     end
                 end
 
@@ -3157,7 +3157,7 @@ local Library do
                 end
 
                 Dropdown.IsOpen = Bool
-                Items["OptionHolder"].Instance.Parent = Bool and Library.Holder.Instance or Library.UnusedHolder.Instance
+                Items["OptionHolder"].Instance.Parent = Bool and Enthusiast.Holder.Instance or Enthusiast.UnusedHolder.Instance
 
                 Debounce = true
 
@@ -3170,16 +3170,16 @@ local Library do
                         Items["OptionHolder"].Instance.Size = UDim2New(0, Items["RealDropdown"].Instance.AbsoluteSize.X, 0, Data.MaxSize or 165)
                     end)
 
-                    for Index, Value in Library.OpenFrames do 
+                    for Index, Value in Enthusiast.OpenFrames do 
                         if Value.Name ~= Data.Name then 
                             Value:SetOpen(false)
                         end
                     end
 
-                    Library.OpenFrames[Data.Name] = Dropdown
+                    Enthusiast.OpenFrames[Data.Name] = Dropdown
                 else
-                    if Library.OpenFrames[Data.Name] then 
-                        Library.OpenFrames[Data.Name] = nil
+                    if Enthusiast.OpenFrames[Data.Name] then 
+                        Enthusiast.OpenFrames[Data.Name] = nil
                     end
 
                     if RenderStepped then
@@ -3215,7 +3215,7 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                Enthusiast:Connect(NewTween.Tween.Completed, function()
                     Debounce = false
                     Items["OptionHolder"].Instance.Visible = Bool
                 end)
@@ -3227,9 +3227,9 @@ local Library do
 
             getgenv().Options[Dropdown.Flag] = Dropdown
 
-            Library:Connect(UserInputService.InputBegan, function(Input)
+            Enthusiast:Connect(UserInputService.InputBegan, function(Input)
                 if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    if Library:IsMouseOverFrame(Items["OptionHolder"]) then
+                    if Enthusiast:IsMouseOverFrame(Items["OptionHolder"]) then
                         return
                     end
 
@@ -3275,7 +3275,7 @@ local Library do
                 Item = Items["Dropdown"]
             }
 
-            local PageSearchData = Library.SearchItems[Data.Page]
+            local PageSearchData = Enthusiast.SearchItems[Data.Page]
 
             if not PageSearchData then 
                 return 
@@ -3295,7 +3295,7 @@ local Library do
                 Dropdown:Set(Data.Default)
             end
 
-            Library.SetFlags[Dropdown.Flag] = function(Value)
+            Enthusiast.SetFlags[Dropdown.Flag] = function(Value)
                 Dropdown:Set(Value)
             end
 
@@ -3321,13 +3321,13 @@ local Library do
             local AnimationsDropdown 
             local AnimationsDropdownItems
 
-            Library.Flags[Data.Flag] = { }
+            Enthusiast.Flags[Data.Flag] = { }
 
             local Items = { } do
                 Items["ColorpickerButton"] = Instances:Create("TextButton", {
                     Parent = Data.Parent.Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -3385,11 +3385,11 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Items["ColorpickerWindow"] = Instances:Create("TextButton", {
-                    Parent = Library.UnusedHolder.Instance,
+                    Parent = Enthusiast.UnusedHolder.Instance,
                     Text = "",
                     AutoButtonColor = false,
                     Name = "\0",
@@ -3441,7 +3441,7 @@ local Library do
                 Items["Palette"] = Instances:Create("TextButton", {
                     Parent = Items["ColorpickerWindow"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -3464,7 +3464,7 @@ local Library do
                     Parent = Items["Palette"].Instance,
                     Name = "\0",
                     BorderColor3 = FromRGB(0, 0, 0),
-                    Image = Library:GetImage("Saturation"),
+                    Image = Enthusiast:GetImage("Saturation"),
                     BackgroundTransparency = 1,
                     Size = UDim2New(1, 0, 1, 0),
                     ZIndex = 2,
@@ -3483,7 +3483,7 @@ local Library do
                     Name = "\0",
                     BorderColor3 = FromRGB(0, 0, 0),
                     Size = UDim2New(1, 2, 1, 0),
-                    Image = Library:GetImage("Value"),
+                    Image = Enthusiast:GetImage("Value"),
                     BackgroundTransparency = 1,
                     Position = UDim2New(0, -1, 0, 0),
                     ZIndex = 3,
@@ -3574,7 +3574,7 @@ local Library do
                 Items["Alpha"] = Instances:Create("TextButton", {
                     Parent = Items["ColorpickerWindow"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     AutoButtonColor = false,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
@@ -3625,7 +3625,7 @@ local Library do
                     ScaleType = Enum.ScaleType.Tile,
                     BorderColor3 = FromRGB(0, 0, 0),
                     TileSize = UDim2New(0, 6, 0, 6),
-                    Image = Library:GetImage("Checkers"),
+                    Image = Enthusiast:GetImage("Checkers"),
                     BackgroundTransparency = 1,
                     Size = UDim2New(1, 0, 1, 0),
                     ZIndex = 2,
@@ -3662,7 +3662,7 @@ local Library do
                     DropdownItems["Text"] = Instances:Create("TextLabel", {
                         Parent = DropdownItems["Dropdown"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(255, 255, 255),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "animations",
@@ -3695,7 +3695,7 @@ local Library do
                         Rotation = 84,
                         Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                     }):AddToTheme({Color = function()
-                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                     end})
 
                     Instances:Create("UICorner", {
@@ -3707,7 +3707,7 @@ local Library do
                     DropdownItems["Value"] = Instances:Create("TextLabel", {
                         Parent = DropdownItems["RealDropdown"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(255, 255, 255),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "--",
@@ -3742,7 +3742,7 @@ local Library do
                     DropdownItems["OptionHolder"] = Instances:Create("TextButton", {
                         Parent = DropdownItems["Dropdown"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(0, 0, 0),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "",
@@ -3763,7 +3763,7 @@ local Library do
                         Rotation = 84,
                         Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                     }):AddToTheme({Color = function()
-                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                     end})
 
                     Instances:Create("UIStroke", {
@@ -3809,7 +3809,7 @@ local Library do
                     local OptionButton = Instances:Create("TextButton", {
                         Parent = DropdownItems["OptionHolder"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(0, 0, 0),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "",
@@ -3849,7 +3849,7 @@ local Library do
                     local OptionText = Instances:Create("TextLabel", {
                         Parent = OptionButton.Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextTransparency = 0.5,
                         AnchorPoint = Vector2New(0, 0.5),
                         ZIndex = 5,
@@ -3898,7 +3898,7 @@ local Library do
                                 TableInsert(Dropdown.Value, OptionData.Name)
                             end
 
-                            Library.Flags[Dropdown.Flag] = Dropdown.Value
+                            Enthusiast.Flags[Dropdown.Flag] = Dropdown.Value
 
                             OptionData:Toggle(Index and "Inactive" or "Active")
 
@@ -3908,7 +3908,7 @@ local Library do
                         else
                             if OptionData.Selected then 
                                 Dropdown.Value = OptionData.Name
-                                Library.Flags[Dropdown.Flag] = OptionData.Name
+                                Enthusiast.Flags[Dropdown.Flag] = OptionData.Name
 
                                 OptionData:Toggle("Active")
 
@@ -3922,7 +3922,7 @@ local Library do
                                 DropdownItems["Value"].Instance.Text = OptionData.Name 
                             else
                                 Dropdown.Value = nil
-                                Library.Flags[Dropdown.Flag] = nil
+                                Enthusiast.Flags[Dropdown.Flag] = nil
 
                                 OptionData:Toggle("Inactive")
                                 DropdownItems["Value"].Instance.Text = "--"
@@ -3930,7 +3930,7 @@ local Library do
                         end
 
                         if Dropdown.Callback then 
-                            Library:SafeCall(Dropdown.Callback, Dropdown.Value)
+                            Enthusiast:SafeCall(Dropdown.Callback, Dropdown.Value)
                         end
                     end
 
@@ -3950,7 +3950,7 @@ local Library do
                     end
 
                     Dropdown.IsOpen = Bool
-                    DropdownItems["OptionHolder"].Instance.Parent = Bool and Library.Holder.Instance or Library.UnusedHolder.Instance
+                    DropdownItems["OptionHolder"].Instance.Parent = Bool and Enthusiast.Holder.Instance or Enthusiast.UnusedHolder.Instance
 
                     Debounce = true
 
@@ -3995,7 +3995,7 @@ local Library do
                         end
                     end
 
-                    Library:Connect(NewTween.Tween.Completed, function()
+                    Enthusiast:Connect(NewTween.Tween.Completed, function()
                         Debounce = false
                         DropdownItems["OptionHolder"].Instance.Visible = Bool
                     end)
@@ -4008,7 +4008,7 @@ local Library do
                         end
 
                         Dropdown.Value = Option
-                        Library.Flags[Dropdown.Flag] = Option
+                        Enthusiast.Flags[Dropdown.Flag] = Option
 
                         for Index, Value in Option do 
                             local OptionData = Dropdown.Options[Value]
@@ -4030,7 +4030,7 @@ local Library do
                         local OptionData = Dropdown.Options[Option]
 
                         Dropdown.Value = OptionData.Name
-                        Library.Flags[Dropdown.Flag] = OptionData.Name
+                        Enthusiast.Flags[Dropdown.Flag] = OptionData.Name
 
                         for Index, Value in Dropdown.Options do 
                             if Value ~= OptionData then
@@ -4046,11 +4046,11 @@ local Library do
                     end
 
                     if Dropdown.Callback then 
-                        Library:SafeCall(Dropdown.Callback, Dropdown.Value)
+                        Enthusiast:SafeCall(Dropdown.Callback, Dropdown.Value)
                     end
                 end
 
-                Library.SetFlags[Dropdown.Flag] = function(Value)
+                Enthusiast.SetFlags[Dropdown.Flag] = function(Value)
                     Dropdown:Set(Value)
                 end
 
@@ -4068,7 +4068,7 @@ local Library do
                     if TableFind(Value, "rainbow") then 
                         OldColor = Colorpicker.Color
 
-                        Library:Thread(function()
+                        Enthusiast:Thread(function()
                             while task.wait() do 
                                 local RainbowHue = MathAbs(MathSin(tick() * 0.32))
                                 local Color = FromHSV(RainbowHue, 1, 1)
@@ -4084,7 +4084,7 @@ local Library do
                     end
 
                     if TableFind(Value, "breathing") then 
-                        Library:Thread(function()
+                        Enthusiast:Thread(function()
                             OldAlpha = Colorpicker.Alpha
                             while task.wait() do 
                                 local AlphaValue = MathAbs(MathSin(tick() * 0.8))
@@ -4120,22 +4120,22 @@ local Library do
                 Colorpicker.IsOpen = Bool
 
                 Debounce = true
-                Items["ColorpickerWindow"].Instance.Parent = Bool and Library.Holder.Instance or Library.UnusedHolder.Instance
+                Items["ColorpickerWindow"].Instance.Parent = Bool and Enthusiast.Holder.Instance or Enthusiast.UnusedHolder.Instance
 
                 if Bool then 
                     Items["ColorpickerWindow"].Instance.Visible = true
                     Items["ColorpickerWindow"].Instance.Position = UDim2New(0, Items["ColorpickerButton"].Instance.AbsolutePosition.X, 0, Items["ColorpickerButton"].Instance.AbsolutePosition.Y + 25)
                     
-                    for Index, Value in Library.OpenFrames do 
+                    for Index, Value in Enthusiast.OpenFrames do 
                         if Value.Type == "Colorpicker" then 
                             Value:SetOpen(false)
                         end
                     end
 
-                    Library.OpenFrames[Data.Name] = Colorpicker
+                    Enthusiast.OpenFrames[Data.Name] = Colorpicker
                 else
-                    if Library.OpenFrames[Data.Name] then 
-                        Library.OpenFrames[Data.Name] = nil
+                    if Enthusiast.OpenFrames[Data.Name] then 
+                        Enthusiast.OpenFrames[Data.Name] = nil
                     end
                 end
 
@@ -4160,7 +4160,7 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                Enthusiast:Connect(NewTween.Tween.Completed, function()
                     Debounce = false
                     Items["ColorpickerWindow"].Instance.Visible = Bool
                 end)                
@@ -4177,7 +4177,7 @@ local Library do
                 Colorpicker.Color = Color
                 Colorpicker.HexValue = Color:ToHex()
 
-                Library.Flags[Data.Flag] = {
+                Enthusiast.Flags[Data.Flag] = {
                     Alpha = Colorpicker.Alpha,
                     Color = Colorpicker.HexValue
                 }
@@ -4191,7 +4191,7 @@ local Library do
                 end
 
                 if Data.Callback then 
-                    Library:SafeCall(Data.Callback, Color, Colorpicker.Alpha)
+                    Enthusiast:SafeCall(Data.Callback, Color, Colorpicker.Alpha)
                 end
             end
 
@@ -4351,7 +4351,7 @@ local Library do
                 end
             end)
 
-            Library:Connect(UserInputService.InputChanged, function(Input)
+            Enthusiast:Connect(UserInputService.InputChanged, function(Input)
                 if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
                     if SlidingPalette then
                         Colorpicker:SlidePalette(Input)
@@ -4367,13 +4367,13 @@ local Library do
                 end
             end)
 
-            Library:Connect(UserInputService.InputBegan, function(Input)
+            Enthusiast:Connect(UserInputService.InputBegan, function(Input)
                 if Input.UserInputType == Enum.UserInputType.MouseButton1 then
                     if not Colorpicker.IsOpen then
                         return
                     end
 
-                    if Library:IsMouseOverFrame(Items["ColorpickerWindow"]) or Library:IsMouseOverFrame(AnimationsDropdownItems["OptionHolder"]) then
+                    if Enthusiast:IsMouseOverFrame(Items["ColorpickerWindow"]) or Enthusiast:IsMouseOverFrame(AnimationsDropdownItems["OptionHolder"]) then
                         return 
                     end
 
@@ -4389,7 +4389,7 @@ local Library do
                 Colorpicker:Set(Data.Default, Data.Alpha)
             end
 
-            Library.SetFlags[Data.Flag] = function(Color, Alpha)
+            Enthusiast.SetFlags[Data.Flag] = function(Color, Alpha)
                 Colorpicker:Set(Color, Alpha)
             end
 
@@ -4409,20 +4409,20 @@ local Library do
             }
 
             local Modes = { }
-            Library.Flags[Data.Flag] = { }
+            Enthusiast.Flags[Data.Flag] = { }
             local ModesDropdown
             local ModesDropdownItems 
             local KeylistItem 
 
-            if Library.KeyList then 
-                KeylistItem = Library.KeyList:Add("", "")
+            if Enthusiast.KeyList then 
+                KeylistItem = Enthusiast.KeyList:Add("", "")
             end
 
             local Items = { } do
                 Items["KeyButton"] = Instances:Create("TextButton", {
                     Parent = Data.Parent.Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     TextTransparency = 0.5,
                     Text = "None",
@@ -4446,7 +4446,7 @@ local Library do
                 })
 
                 Items["KeybindWindow"] = Instances:Create("Frame", {
-                    Parent = Library.Holder.Instance,
+                    Parent = Enthusiast.Holder.Instance,
                     Name = "\0",
                     Position = UDim2New(0, Items["KeyButton"].Instance.AbsolutePosition.X, 0, Items["KeyButton"].Instance.AbsolutePosition.Y + 25),
                     BorderColor3 = FromRGB(0, 0, 0),
@@ -4490,7 +4490,7 @@ local Library do
                     DropdownItems["Text"] = Instances:Create("TextLabel", {
                         Parent = DropdownItems["Dropdown"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(255, 255, 255),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "mode",
@@ -4523,7 +4523,7 @@ local Library do
                         Rotation = 84,
                         Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                     }):AddToTheme({Color = function()
-                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                     end})
 
                     Instances:Create("UICorner", {
@@ -4535,7 +4535,7 @@ local Library do
                     DropdownItems["Value"] = Instances:Create("TextLabel", {
                         Parent = DropdownItems["RealDropdown"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(255, 255, 255),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "--",
@@ -4570,7 +4570,7 @@ local Library do
                     DropdownItems["OptionHolder"] = Instances:Create("TextButton", {
                         Parent = DropdownItems["Dropdown"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(0, 0, 0),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "",
@@ -4591,7 +4591,7 @@ local Library do
                         Rotation = 84,
                         Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                     }):AddToTheme({Color = function()
-                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                     end})
 
                     Instances:Create("UIStroke", {
@@ -4637,7 +4637,7 @@ local Library do
                     local OptionButton = Instances:Create("TextButton", {
                         Parent = DropdownItems["OptionHolder"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(0, 0, 0),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "",
@@ -4677,7 +4677,7 @@ local Library do
                     local OptionText = Instances:Create("TextLabel", {
                         Parent = OptionButton.Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextTransparency = 0.5,
                         AnchorPoint = Vector2New(0, 0.5),
                         ZIndex = 5,
@@ -4726,7 +4726,7 @@ local Library do
                                 TableInsert(Dropdown.Value, OptionData.Name)
                             end
 
-                            Library.Flags[Dropdown.Flag] = Dropdown.Value
+                            Enthusiast.Flags[Dropdown.Flag] = Dropdown.Value
 
                             OptionData:Toggle(Index and "Inactive" or "Active")
 
@@ -4736,7 +4736,7 @@ local Library do
                         else
                             if OptionData.Selected then 
                                 Dropdown.Value = OptionData.Name
-                                Library.Flags[Dropdown.Flag] = OptionData.Name
+                                Enthusiast.Flags[Dropdown.Flag] = OptionData.Name
 
                                 OptionData:Toggle("Active")
 
@@ -4750,7 +4750,7 @@ local Library do
                                 DropdownItems["Value"].Instance.Text = OptionData.Name 
                             else
                                 Dropdown.Value = nil
-                                Library.Flags[Dropdown.Flag] = nil
+                                Enthusiast.Flags[Dropdown.Flag] = nil
 
                                 OptionData:Toggle("Inactive")
                                 DropdownItems["Value"].Instance.Text = "--"
@@ -4758,7 +4758,7 @@ local Library do
                         end
 
                         if Dropdown.Callback then 
-                            Library:SafeCall(Dropdown.Callback, Dropdown.Value)
+                            Enthusiast:SafeCall(Dropdown.Callback, Dropdown.Value)
                         end
                     end
 
@@ -4777,7 +4777,7 @@ local Library do
                         end
 
                         Dropdown.Value = Option
-                        Library.Flags[Dropdown.Flag] = Option
+                        Enthusiast.Flags[Dropdown.Flag] = Option
 
                         for Index, Value in Option do 
                             local OptionData = Dropdown.Options[Value]
@@ -4799,7 +4799,7 @@ local Library do
                         local OptionData = Dropdown.Options[Option]
 
                         Dropdown.Value = OptionData.Name
-                        Library.Flags[Dropdown.Flag] = OptionData.Name
+                        Enthusiast.Flags[Dropdown.Flag] = OptionData.Name
 
                         for Index, Value in Dropdown.Options do 
                             if Value ~= OptionData then
@@ -4815,10 +4815,10 @@ local Library do
                     end
 
                     if Dropdown.Callback then 
-                        Library:SafeCall(Dropdown.Callback, Dropdown.Value)
+                        Enthusiast:SafeCall(Dropdown.Callback, Dropdown.Value)
                     end
 
-                    Library.SetFlags[Dropdown.Flag] = function(Value)
+                    Enthusiast.SetFlags[Dropdown.Flag] = function(Value)
                         Dropdown:Set(Value)
                     end
                 end
@@ -4842,7 +4842,7 @@ local Library do
                     end
 
                     Dropdown.IsOpen = Bool
-                    DropdownItems["OptionHolder"].Instance.Parent = Bool and Library.Holder.Instance or Library.UnusedHolder.Instance
+                    DropdownItems["OptionHolder"].Instance.Parent = Bool and Enthusiast.Holder.Instance or Enthusiast.UnusedHolder.Instance
 
                     Debounce = true
 
@@ -4887,7 +4887,7 @@ local Library do
                         end
                     end
 
-                    Library:Connect(NewTween.Tween.Completed, function()
+                    Enthusiast:Connect(NewTween.Tween.Completed, function()
                         Debounce = false
                         DropdownItems["OptionHolder"].Instance.Visible = Bool
                     end)
@@ -4904,7 +4904,7 @@ local Library do
                     ToggleItems["Toggle"] = Instances:Create("TextButton", {
                         Parent = Items["KeybindWindow"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(0, 0, 0),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "",
@@ -4921,7 +4921,7 @@ local Library do
                     ToggleItems["Text"] = Instances:Create("TextLabel", {
                         Parent = ToggleItems["Toggle"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(255, 255, 255),
                         TextTransparency = 0.5,
                         Text = "show in keybind list",
@@ -4978,7 +4978,7 @@ local Library do
                         Rotation = 84,
                         Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                     }):AddToTheme({Color = function()
-                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                     end})
 
                     ToggleItems["Check"] = Instances:Create("ImageLabel", {
@@ -5010,14 +5010,14 @@ local Library do
 
                 function Toggle:Set(Bool)
                     Toggle.Value = Bool 
-                    Library.Flags[Toggle.Flag] = Bool
+                    Enthusiast.Flags[Toggle.Flag] = Bool
 
                     if Bool then
                         ToggleItems["Indicator"]:ChangeItemTheme({BackgroundColor3 = "Accent"})
                         ToggleItems["Inline"]:ChangeItemTheme({BackgroundColor3 = "Accent"})
 
-                        ToggleItems["Indicator"]:Tween(nil, {BackgroundColor3 = Library.Theme.Accent})
-                        ToggleItems["Inline"]:Tween(nil, {BackgroundColor3 = Library.Theme.Accent})
+                        ToggleItems["Indicator"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Accent})
+                        ToggleItems["Inline"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Accent})
 
                         ToggleItems["Check"]:Tween(nil, {ImageTransparency = 0})
                         ToggleItems["Text"]:Tween(nil, {TextTransparency = 0})
@@ -5025,15 +5025,15 @@ local Library do
                         ToggleItems["Indicator"]:ChangeItemTheme({BackgroundColor3 = "Element"})
                         ToggleItems["Inline"]:ChangeItemTheme({BackgroundColor3 = "Element"})
 
-                        ToggleItems["Indicator"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
-                        ToggleItems["Inline"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                        ToggleItems["Indicator"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
+                        ToggleItems["Inline"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
 
                         ToggleItems["Check"]:Tween(nil, {ImageTransparency = 1})
                         ToggleItems["Text"]:Tween(nil, {TextTransparency = 0.5})
                     end
 
                     if Toggle.Callback then 
-                        Library:SafeCall(Toggle.Callback, Bool)
+                        Enthusiast:SafeCall(Toggle.Callback, Bool)
                     end
                 end
 
@@ -5052,7 +5052,7 @@ local Library do
                 Dropdown.Callback = function(Value)
                     Keybind.Mode = Value
 
-                    Library.Flags[Data.Flag] = {
+                    Enthusiast.Flags[Data.Flag] = {
                         Mode = Keybind.Mode,
                         Key = Keybind.Key,
                         Toggled = Keybind.Toggled
@@ -5088,24 +5088,24 @@ local Library do
                 Keybind.IsOpen = Bool
 
                 Debounce = true
-                Items["KeybindWindow"].Instance.Parent = Bool and Library.Holder.Instance or Library.UnusedHolder.Instance
+                Items["KeybindWindow"].Instance.Parent = Bool and Enthusiast.Holder.Instance or Enthusiast.UnusedHolder.Instance
 
                 if Bool then 
                     Items["KeybindWindow"].Instance.Visible = true
                     Items["KeybindWindow"].Instance.Position = UDim2New(0, Items["KeyButton"].Instance.AbsolutePosition.X, 0, Items["KeyButton"].Instance.AbsolutePosition.Y + 25)
 
-                    for Index, Value in Library.OpenFrames do 
+                    for Index, Value in Enthusiast.OpenFrames do 
                         if Value.Type == "Keybind" then 
                             Value:SetOpen(false)
                         end
                     end
 
-                    Library.OpenFrames[Data.Name] = Keybind
+                    Enthusiast.OpenFrames[Data.Name] = Keybind
                 else
                     ModesDropdown:SetOpen(false)
 
-                    if Library.OpenFrames[Data.Name] then 
-                        Library.OpenFrames[Data.Name] = nil
+                    if Enthusiast.OpenFrames[Data.Name] then 
+                        Enthusiast.OpenFrames[Data.Name] = nil
                     end
                 end
 
@@ -5136,7 +5136,7 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                Enthusiast:Connect(NewTween.Tween.Completed, function()
                     Debounce = false
                     Items["KeybindWindow"].Instance.Visible = Bool
                 end)
@@ -5145,7 +5145,7 @@ local Library do
             function Keybind:SetMode(Mode)
                 ModesDropdown:Set(Mode)
                 
-                Library.Flags[Data.Flag] = {
+                Enthusiast.Flags[Data.Flag] = {
                     Mode = Keybind.Mode,
                     Key = Keybind.Key,
                     Toggled = Keybind.Toggled
@@ -5170,14 +5170,14 @@ local Library do
                     Keybind.Value = TextToDisplay
                     Items["KeyButton"].Instance.Text = TextToDisplay
 
-                    Library.Flags[Data.Flag] = {
+                    Enthusiast.Flags[Data.Flag] = {
                         Mode = Keybind.Mode,
                         Key = Keybind.Key,
                         Toggled = Keybind.Toggled
                     }
 
                     if Data.Callback then 
-                        Library:SafeCall(Data.Callback, Keybind.Toggled)
+                        Enthusiast:SafeCall(Data.Callback, Keybind.Toggled)
                     end
 
                     Update()
@@ -5202,7 +5202,7 @@ local Library do
                     Items["KeyButton"].Instance.Text = TextToDisplay
 
                     if Data.Callback then 
-                        Library:SafeCall(Data.Callback, Keybind.Toggled)
+                        Enthusiast:SafeCall(Data.Callback, Keybind.Toggled)
                     end
 
                     Update()
@@ -5211,7 +5211,7 @@ local Library do
                     Keybind:SetMode(Keybind.Mode)
 
                     if Data.Callback then 
-                        Library:SafeCall(Data.Callback, Keybind.Toggled)
+                        Enthusiast:SafeCall(Data.Callback, Keybind.Toggled)
                     end
 
                     Update()
@@ -5230,14 +5230,14 @@ local Library do
                     Keybind.Toggled = true
                 end
 
-                Library.Flags[Data.Flag] = {
+                Enthusiast.Flags[Data.Flag] = {
                     Mode = Keybind.Mode,
                     Key = Keybind.Key,
                     Toggled = Keybind.Toggled
                 }
 
                 if Data.Callback then 
-                    Library:SafeCall(Data.Callback, Keybind.Toggled)
+                    Enthusiast:SafeCall(Data.Callback, Keybind.Toggled)
                 end
 
                 Update()
@@ -5267,7 +5267,7 @@ local Library do
                 end)
             end)
 
-            Library:Connect(UserInputService.InputBegan, function(Input)
+            Enthusiast:Connect(UserInputService.InputBegan, function(Input)
                 if tostring(Input.KeyCode) == Keybind.Key or tostring(Input.UserInputType) == Keybind.Key and not Keybind.Value == "None" then
                     if Keybind.Mode == "toggle" then 
                         Keybind:Press()
@@ -5277,7 +5277,7 @@ local Library do
                 end
 
                 if Input.UserInputType == Enum.UserInputType.MouseButton1 then 
-                    if Library:IsMouseOverFrame(Items["KeybindWindow"]) or Library:IsMouseOverFrame(ModesDropdownItems["OptionHolder"]) then 
+                    if Enthusiast:IsMouseOverFrame(Items["KeybindWindow"]) or Enthusiast:IsMouseOverFrame(ModesDropdownItems["OptionHolder"]) then 
                         return
                     end
 
@@ -5289,7 +5289,7 @@ local Library do
                 end
             end)
 
-            Library:Connect(UserInputService.InputEnded, function(Input)
+            Enthusiast:Connect(UserInputService.InputEnded, function(Input)
                 if tostring(Input.KeyCode) == Keybind.Key or tostring(Input.UserInputType) == Keybind.Key and not Keybind.Value == "None"  then
                     if Keybind.Mode == "hold" then 
                         Keybind:Press(false)
@@ -5307,7 +5307,7 @@ local Library do
                Keybind:Set({Key = Data.Default, Mode = Data.Mode})
             end
 
-            Library.SetFlags[Data.Flag] = function(Value)
+            Enthusiast.SetFlags[Data.Flag] = function(Value)
                 Keybind:Set(Value)
             end
 
@@ -5316,7 +5316,7 @@ local Library do
     end
 
     do -- Element functions
-        Library.ESPPreview = function(self, Data)
+        Enthusiast.ESPPreview = function(self, Data)
             local ESPPreview = { 
                 Player = nil,
                 Items = { },
@@ -5392,13 +5392,13 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Items["Title"] = Instances:Create("TextLabel", {
                     Parent = Items["Topbar"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     AnchorPoint = Vector2New(0, 0.5),
                     ZIndex = 2,
                     TextSize = 14,
@@ -6040,7 +6040,7 @@ local Library do
             ViewportCamera.Focus = CFrameNew(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
             ViewportCamera.CFrame = CFrameNew(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 
-            Library:Connect(RunService.RenderStepped, function()	
+            Enthusiast:Connect(RunService.RenderStepped, function()	
                 local Pos, Size = Math:GetBoundingBox(ESPPreview.Player, ViewportCamera, Items.CharacterViewport.Instance)
                 Items.Box.Instance.Position = Pos
                 Items.Box.Instance.Size = Size
@@ -6138,7 +6138,7 @@ local Library do
             return ESPPreview
         end
         
-        Library.ChatSystem = function(self, Data)
+        Enthusiast.ChatSystem = function(self, Data)
             local GlobalChat = { }
 
             local Items = { } do 
@@ -6216,7 +6216,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Items["Logo"] = Instances:Create("ImageLabel", {
@@ -6238,7 +6238,7 @@ local Library do
                 Items["Title"] = Instances:Create("TextLabel", {
                     Parent = Items["Topbar"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     AnchorPoint = Vector2New(0, 0.5),
                     ZIndex = 2,
                     TextSize = 14,
@@ -6295,13 +6295,13 @@ local Library do
                     Rotation = 90,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Items["StatusText"] = Instances:Create("TextLabel", {
                     Parent = Items["Topbar"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(62, 255, 91),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "Connected",
@@ -6350,7 +6350,7 @@ local Library do
                 Items["Input"] = Instances:Create("TextBox", {
                     Parent = Items["SendMessage"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     MultiLine = true,
                     CursorPosition = -1,
                     PlaceholderColor3 = FromRGB(185, 185, 185),
@@ -6382,7 +6382,7 @@ local Library do
                 Items["SendMessageButton"] = Instances:Create("TextButton", {
                     Parent = Items["SendMessage"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -6454,7 +6454,7 @@ local Library do
 
             function GlobalChat:SetVisibility(Bool)
                 Items["Chat_System"].Instance.Visible = Bool
-                Items["Chat_System"].Instance.Parent = Bool and Data.MainFrame.Instance or Library.UnusedHolder
+                Items["Chat_System"].Instance.Parent = Bool and Data.MainFrame.Instance or Enthusiast.UnusedHolder
             end
 
             function GlobalChat:SetStatusText(Text)
@@ -6488,7 +6488,7 @@ local Library do
                         SubItems["PlayerName"] = Instances:Create("TextLabel", {
                             Parent = SubItems["Message1"].Instance,
                             Name = "\0",
-                            FontFace = Library.Font,
+                            FontFace = Enthusiast.Font,
                             TextColor3 = FromRGB(255, 255, 255),
                             BorderColor3 = FromRGB(0, 0, 0),
                             Text = Username,
@@ -6526,7 +6526,7 @@ local Library do
                         SubItems["MessageText"] = Instances:Create("TextLabel", {
                             Parent = SubItems["RealMessage"].Instance,
                             Name = "\0",
-                            FontFace = Library.Font,
+                            FontFace = Enthusiast.Font,
                             TextColor3 = FromRGB(255, 255, 255),
                             BorderColor3 = FromRGB(0, 0, 0),
                             Text = Message,
@@ -6581,7 +6581,7 @@ local Library do
                         SubItems["PlayerName"] = Instances:Create("TextLabel", {
                             Parent = SubItems["Message1"].Instance,
                             Name = "\0",
-                            FontFace = Library.Font,
+                            FontFace = Enthusiast.Font,
                             TextColor3 = FromRGB(255, 255, 255),
                             BorderColor3 = FromRGB(0, 0, 0),
                             Text = Username,
@@ -6621,7 +6621,7 @@ local Library do
                         SubItems["MessageText"] = Instances:Create("TextLabel", {
                             Parent = SubItems["RealMessage"].Instance,
                             Name = "\0",
-                            FontFace = Library.Font,
+                            FontFace = Enthusiast.Font,
                             TextColor3 = FromRGB(255, 255, 255),
                             BorderColor3 = FromRGB(0, 0, 0),
                             Text = Message,
@@ -6671,25 +6671,25 @@ local Library do
                 end
                 
                 OnMessagePressed()
-                Items["SendMessageButton"]:Tween(nil, {BackgroundColor3 = Library:GetDarkerColor(Library.Theme.Accent)})
+                Items["SendMessageButton"]:Tween(nil, {BackgroundColor3 = Enthusiast:GetDarkerColor(Enthusiast.Theme.Accent)})
                 task.wait(0.1)
-                Items["SendMessageButton"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                Items["SendMessageButton"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
             end)
 
             Items["SendMessageButton"]:Connect("MouseEnter", function()
-                Items["SendMessageButton"]:Tween(nil, {BackgroundColor3 = Library:GetDarkerColor(Library.Theme.Element)})
+                Items["SendMessageButton"]:Tween(nil, {BackgroundColor3 = Enthusiast:GetDarkerColor(Enthusiast.Theme.Element)})
             end)
 
             Items["SendMessageButton"]:Connect("MouseLeave", function()
-                Items["SendMessageButton"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                Items["SendMessageButton"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
             end)
 
             Items["Input"]:Connect("MouseEnter", function()
-                Items["Input"]:Tween(nil, {BackgroundColor3 = Library:GetDarkerColor(Library.Theme.Element)})
+                Items["Input"]:Tween(nil, {BackgroundColor3 = Enthusiast:GetDarkerColor(Enthusiast.Theme.Element)})
             end)
 
             Items["Input"]:Connect("MouseLeave", function()
-                Items["Input"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                Items["Input"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
             end)
 
             Items["Messages"]:Connect("ChildAdded", function()
@@ -6700,7 +6700,7 @@ local Library do
             return GlobalChat 
         end
         
-        Library.Notification = function(self, Data)
+        Enthusiast.Notification = function(self, Data)
             Data = Data or { }
 
             local Notification = {
@@ -6713,7 +6713,7 @@ local Library do
 
             local Items = { } do
                 Items["Notification"] = Instances:Create("Frame", {
-                    Parent = Library.NotifHolder.Instance,
+                    Parent = Enthusiast.NotifHolder.Instance,
                     Name = "\0",
                     BorderColor3 = FromRGB(0, 0, 0),
                     BorderSizePixel = 0,
@@ -6763,7 +6763,7 @@ local Library do
                 Items["Title"] = Instances:Create("TextLabel", {
                     Parent = Items["Notification"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = Notification.Name,
@@ -6779,7 +6779,7 @@ local Library do
                 Items["Description"] = Instances:Create("TextLabel", {
                     Parent = Items["Notification"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     TextTransparency = 0.5,
                     Text = Notification.Description,
@@ -6814,7 +6814,7 @@ local Library do
 
             Items["Notification"].Instance.AutomaticSize = Enum.AutomaticSize.None
 
-            Library:Thread(function()
+            Enthusiast:Thread(function()
                 Items["Notification"]:Tween(nil, {BackgroundTransparency = 0, Size = UDim2New(0,  OldSize.X, 0, OldSize.Y)})
                 
                 task.wait(0.06)
@@ -6856,12 +6856,12 @@ local Library do
             return Notification
         end
 
-        Library.Watermark = function(self, Text, Logo)
+        Enthusiast.Watermark = function(self, Text, Logo)
             local Watermark = { }
 
             local Items = { } do
                 Items["Watermark"] = Instances:Create("Frame", {
-                    Parent = Library.Holder.Instance,
+                    Parent = Enthusiast.Holder.Instance,
                     Name = "\0",
                     BorderColor3 = FromRGB(0, 0, 0),
                     AnchorPoint = Vector2New(0.5, 0),
@@ -6880,7 +6880,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Instances:Create("UICorner", {
@@ -6908,7 +6908,7 @@ local Library do
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["Watermark"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = Text,
@@ -6940,13 +6940,13 @@ local Library do
             return Watermark 
         end
 
-        Library.KeybindsList = function(self)
+        Enthusiast.KeybindsList = function(self)
             local KeybindList = { }
             self.KeyList = KeybindList
 
             local Items = { } do
                 Items["KeybindsList"] = Instances:Create("Frame", {
-                    Parent = Library.Holder.Instance,
+                    Parent = Enthusiast.Holder.Instance,
                     Name = "\0",
                     BorderColor3 = FromRGB(0, 0, 0),
                     AnchorPoint = Vector2New(0, 0.5),
@@ -6971,7 +6971,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Items["Icon"] = Instances:Create("ImageLabel", {
@@ -6990,7 +6990,7 @@ local Library do
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["KeybindsList"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "keybinds",
@@ -7035,7 +7035,7 @@ local Library do
                 local NewKey = Instances:Create("TextLabel", {
                     Parent = Items["Content"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     TextTransparency = 0.5,
                     Text = "(" .. Key .. ") - ".. Name .. "",
@@ -7052,7 +7052,7 @@ local Library do
                 local NewKeyStatus = Instances:Create("TextLabel", {
                     Parent = NewKey.Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     TextTransparency = 0.5,
                     Text = "off",
@@ -7109,7 +7109,7 @@ local Library do
             return KeybindList
         end 
 
-        Library.Window = function(self, Data)
+        Enthusiast.Window = function(self, Data)
             Data = Data or { }
 
             local Window = {
@@ -7128,7 +7128,7 @@ local Library do
 
             local Items = { } do
                 Items["MainFrame"] = Instances:Create("Frame", {
-                    Parent = Library.Holder.Instance,
+                    Parent = Enthusiast.Holder.Instance,
                     Name = "\0",
                     BorderColor3 = FromRGB(0, 0, 0),
                     AnchorPoint = Vector2New(0, 0),
@@ -7259,7 +7259,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Items["Logo"] = Instances:Create("ImageLabel", {
@@ -7281,7 +7281,7 @@ local Library do
                 Items["Title"] = Instances:Create("TextLabel", {
                     Parent = Items["Topbar"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     AnchorPoint = Vector2New(0, 0.5),
                     ZIndex = 2,
                     TextSize = 14,
@@ -7320,7 +7320,7 @@ local Library do
                 Items["VersionText"] = Instances:Create("TextLabel", {
                     Parent = Items["Version"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     TextTransparency = 0.5,
                     Text = Window.Version,
@@ -7441,7 +7441,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Instances:Create("UICorner", {
@@ -7477,7 +7477,7 @@ local Library do
                 Items["Input"] = Instances:Create("TextBox", {
                     Parent = Items["Search"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     AnchorPoint = Vector2New(0, 0.5),
                     PlaceholderColor3 = FromRGB(185, 185, 185),
                     PlaceholderText = "search",
@@ -7498,7 +7498,7 @@ local Library do
 
                 if IsMobile then 
                     Items["FloatingButton"] = Instances:Create("TextButton", {
-                        Parent = Library.Holder.Instance,
+                        Parent = Enthusiast.Holder.Instance,
                         Text = "",
                         AutoButtonColor = false,
                         Name = "\0",
@@ -7507,7 +7507,7 @@ local Library do
                         Size = UDim2New(0, 50, 0, 50),
                         BorderSizePixel = 0,
                         ZIndex = 127,
-                        BackgroundColor3 = Library.Theme.Background
+                        BackgroundColor3 = Enthusiast.Theme.Background
                     })  Items["FloatingButton"]:AddToTheme({BackgroundColor3 = "Background"})
 
                     Items["FloatingButton"]:MakeDraggable()
@@ -7541,7 +7541,7 @@ local Library do
                 UserInputService.MouseIconEnabled = false
 
                 Items["MouseImage"] = Instances:Create("ImageLabel", {
-                    Parent = Library.Holder.Instance,
+                    Parent = Enthusiast.Holder.Instance,
                     Name = "\0",
                     ScaleType = Enum.ScaleType.Fit,
                     BorderColor3 = FromRGB(0, 0, 0),
@@ -7554,7 +7554,7 @@ local Library do
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })  Items["MouseImage"]:AddToTheme({ImageColor3 = "Accent"})
 
-                Library:Connect(RunService.RenderStepped, function()
+                Enthusiast:Connect(RunService.RenderStepped, function()
                     local MouseLocation = UserInputService:GetMouseLocation() 
                     Items["MouseImage"].Instance.Position = UDim2New(0, MouseLocation.X - 1, 0, MouseLocation.Y - 56)
                 end)
@@ -7609,7 +7609,7 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                Enthusiast:Connect(NewTween.Tween.Completed, function()
                     Debounce = false
                     Items["MainFrame"].Instance.Visible = Bool
 
@@ -7627,13 +7627,13 @@ local Library do
                 Items["Title"].Instance.Text = Text
             end
 
-            Library:Connect(UserInputService.InputBegan, function(Input, GameProcessedEvent)
+            Enthusiast:Connect(UserInputService.InputBegan, function(Input, GameProcessedEvent)
                 if GameProcessedEvent then 
                     return 
                 end
 
-                if tostring(Input.KeyCode) == Library.MenuKeybind 
-                or tostring(Input.UserInputType) == Library.MenuKeybind then
+                if tostring(Input.KeyCode) == Enthusiast.MenuKeybind 
+                or tostring(Input.UserInputType) == Enthusiast.MenuKeybind then
                     Window:SetOpen(not Window.IsOpen)
                 end
             end)
@@ -7641,7 +7641,7 @@ local Library do
             local RenderStepped
 
             Items["Input"]:Connect("Focused", function()
-                local PageSearchData = Library.SearchItems[Library.CurrentPage]
+                local PageSearchData = Enthusiast.SearchItems[Enthusiast.CurrentPage]
 
                 if not PageSearchData then
                     return 
@@ -7698,7 +7698,7 @@ local Library do
             Items["CloseButton"]:Connect("MouseButton1Down", function()
                 Window:SetOpen(false)
                 task.wait(0.1)
-                Library:Unload()
+                Enthusiast:Unload()
             end)
 
             Window.Items = Items
@@ -7707,7 +7707,7 @@ local Library do
             return setmetatable(Window, self)
         end
 
-        Library.Page = function(self, Data)
+        Enthusiast.Page = function(self, Data)
             Data = Data or { }
 
             local Page = {
@@ -7726,7 +7726,7 @@ local Library do
                 SubPagesStack = { }
             }
 
-            Library.SearchItems[Page] = { }
+            Enthusiast.SearchItems[Page] = { }
 
             local Items = { } do
                 Items["PageContent"] = Instances:Create("Frame", {
@@ -7765,7 +7765,7 @@ local Library do
                 Items["Inactive"] = Instances:Create("TextButton", {
                     Parent = Page.Window.Items["Holder"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -7802,7 +7802,7 @@ local Library do
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["Inactive"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     Visible = false,
                     Active = true,
                     AnchorPoint = Vector2New(0, 0.5),
@@ -7922,7 +7922,7 @@ local Library do
 
                 Page.Active = Bool
                 Items["PageContent"].Instance.Visible = Bool
-                Items["PageContent"].Instance.Parent = Bool and Page.Window.Items["Content"].Instance or Library.UnusedHolder.Instance
+                Items["PageContent"].Instance.Parent = Bool and Page.Window.Items["Content"].Instance or Enthusiast.UnusedHolder.Instance
                 
                 Debounce = true 
 
@@ -7930,14 +7930,14 @@ local Library do
                     Items["Text"].Instance.Visible = true 
                     Items["Inactive"]:Tween(nil, {BackgroundTransparency = 0, Size = UDim2New(0, Items["Text"].Instance.TextBounds.X + 38, 0, 32)})
                     Items["Icon"]:ChangeItemTheme({ImageColor3 = "Accent"})
-                    Items["Icon"]:Tween(nil, {ImageColor3 = Library.Theme.Accent, ImageTransparency = 0})
+                    Items["Icon"]:Tween(nil, {ImageColor3 = Enthusiast.Theme.Accent, ImageTransparency = 0})
 
-                    Library.CurrentPage = Page
+                    Enthusiast.CurrentPage = Page
                 else
                     Items["Text"].Instance.Visible = false 
                     Items["Inactive"]:Tween(nil, {BackgroundTransparency = 1, Size = UDim2New(0, 25, 0, 32)})
                     Items["Icon"]:ChangeItemTheme({ImageColor3 = "Image"})
-                    Items["Icon"]:Tween(nil, {ImageColor3 = Library.Theme.Image, ImageTransparency = 0.5}) 
+                    Items["Icon"]:Tween(nil, {ImageColor3 = Enthusiast.Theme.Image, ImageTransparency = 0.5}) 
                 end
 
                 local Descendants = Items["PageContent"].Instance:GetDescendants()
@@ -7961,7 +7961,7 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                Enthusiast:Connect(NewTween.Tween.Completed, function()
                     Debounce = false
                 end)
             end
@@ -7978,10 +7978,10 @@ local Library do
 
             Page.Items = Items
             TableInsert(Page.Window.Pages, Page)
-            return setmetatable(Page, Library.Pages)
+            return setmetatable(Page, Enthusiast.Pages)
         end
 
-        Library.Pages.SubPage = function(self, Data)
+        Enthusiast.Pages.SubPage = function(self, Data)
             Data = Data or { }
 
             local SubPage = {
@@ -7996,7 +7996,7 @@ local Library do
                 ColumnsData = { }
             }
 
-            Library.SearchItems[SubPage] = { }
+            Enthusiast.SearchItems[SubPage] = { }
 
             local Items = { } do
                 Items["PageContent"] = Instances:Create("Frame", {
@@ -8024,7 +8024,7 @@ local Library do
                 Items["Inactive"] = Instances:Create("TextButton", {
                     Parent = SubPage.Page.Items["Holder"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -8062,7 +8062,7 @@ local Library do
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["Inactive"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     Visible = false,
                     Active = true,
                     AnchorPoint = Vector2New(0, 0.5),
@@ -8128,7 +8128,7 @@ local Library do
 
                 SubPage.Active = Bool
                 Items["PageContent"].Instance.Visible = Bool
-                Items["PageContent"].Instance.Parent = Bool and SubPage.Page.Items["Columns"].Instance or Library.UnusedHolder.Instance
+                Items["PageContent"].Instance.Parent = Bool and SubPage.Page.Items["Columns"].Instance or Enthusiast.UnusedHolder.Instance
                 
                 Debounce = true 
 
@@ -8136,14 +8136,14 @@ local Library do
                     Items["Text"].Instance.Visible = true 
                     Items["Inactive"]:Tween(nil, {BackgroundTransparency = 0, Size = UDim2New(0, Items["Text"].Instance.TextBounds.X + 38, 0, 32)})
                     Items["Icon"]:ChangeItemTheme({ImageColor3 = "Accent"})
-                    Items["Icon"]:Tween(nil, {ImageColor3 = Library.Theme.Accent, ImageTransparency = 0}) 
+                    Items["Icon"]:Tween(nil, {ImageColor3 = Enthusiast.Theme.Accent, ImageTransparency = 0}) 
 
-                    Library.CurrentPage = SubPage
+                    Enthusiast.CurrentPage = SubPage
                 else
                     Items["Text"].Instance.Visible = false 
                     Items["Inactive"]:Tween(nil, {BackgroundTransparency = 1, Size = UDim2New(0, 25, 0, 32)})
                     Items["Icon"]:ChangeItemTheme({ImageColor3 = "Image"})
-                    Items["Icon"]:Tween(nil, {ImageColor3 = Library.Theme.Image, ImageTransparency = 0.5}) 
+                    Items["Icon"]:Tween(nil, {ImageColor3 = Enthusiast.Theme.Image, ImageTransparency = 0.5}) 
                 end
 
                 local Descendants = Items["PageContent"].Instance:GetDescendants()
@@ -8167,7 +8167,7 @@ local Library do
                     end
                 end
 
-                Library:Connect(NewTween.Tween.Completed, function()
+                Enthusiast:Connect(NewTween.Tween.Completed, function()
                     Debounce = false
                 end)
             end
@@ -8184,10 +8184,10 @@ local Library do
 
             SubPage.Items = Items
             TableInsert(SubPage.Page.SubPagesStack, SubPage)
-            return setmetatable(SubPage, Library.Pages)
+            return setmetatable(SubPage, Enthusiast.Pages)
         end
 
-        Library.Pages.Playerlist = function(self, Data)
+        Enthusiast.Pages.Playerlist = function(self, Data)
             local Playerlist = {
                 Window = self.Window,
                 Page = self,
@@ -8293,7 +8293,7 @@ local Library do
                 Items["PlayerUsername"] = Instances:Create("TextLabel", {
                     Parent = Items["Playerlist"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "?",
@@ -8310,7 +8310,7 @@ local Library do
                 Items["PlayerUserID"] = Instances:Create("TextLabel", {
                     Parent = Items["Playerlist"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "?",
@@ -8327,7 +8327,7 @@ local Library do
                 Items["PlayerAccountAge"] = Instances:Create("TextLabel", {
                     Parent = Items["Playerlist"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "?",
@@ -8360,7 +8360,7 @@ local Library do
                     DropdownItems["Text"] = Instances:Create("TextLabel", {
                         Parent = DropdownItems["Dropdown"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(255, 255, 255),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "Status",
@@ -8393,7 +8393,7 @@ local Library do
                         Rotation = 84,
                         Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                     }):AddToTheme({Color = function()
-                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                     end})
 
                     Instances:Create("UICorner", {
@@ -8405,7 +8405,7 @@ local Library do
                     DropdownItems["Value"] = Instances:Create("TextLabel", {
                         Parent = DropdownItems["RealDropdown"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(255, 255, 255),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "--",
@@ -8438,9 +8438,9 @@ local Library do
                     })  DropdownItems["OpenIcon"]:AddToTheme({ImageColor3 = "Accent"})
 
                     DropdownItems["OptionHolder"] = Instances:Create("TextButton", {
-                        Parent = Library.Holder.Instance,
+                        Parent = Enthusiast.Holder.Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(0, 0, 0),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "",
@@ -8461,7 +8461,7 @@ local Library do
                         Rotation = 84,
                         Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                     }):AddToTheme({Color = function()
-                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                        return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                     end})
 
                     Instances:Create("UIStroke", {
@@ -8495,11 +8495,11 @@ local Library do
                     })
 
                     DropdownItems["RealDropdown"]:OnHover(function()
-                        DropdownItems["RealDropdown"]:Tween(nil, {BackgroundColor3 = Library:GetLighterColor(Library.Theme.Element, 1.45)})
+                        DropdownItems["RealDropdown"]:Tween(nil, {BackgroundColor3 = Enthusiast:GetLighterColor(Enthusiast.Theme.Element, 1.45)})
                     end)
         
                     DropdownItems["RealDropdown"]:OnHoverLeave(function()
-                        DropdownItems["RealDropdown"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                        DropdownItems["RealDropdown"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
                     end)
                 end
 
@@ -8514,7 +8514,7 @@ local Library do
                     local OptionButton = Instances:Create("TextButton", {
                         Parent = DropdownItems["OptionHolder"].Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextColor3 = FromRGB(0, 0, 0),
                         BorderColor3 = FromRGB(0, 0, 0),
                         Text = "",
@@ -8554,7 +8554,7 @@ local Library do
                     local OptionText = Instances:Create("TextLabel", {
                         Parent = OptionButton.Instance,
                         Name = "\0",
-                        FontFace = Library.Font,
+                        FontFace = Enthusiast.Font,
                         TextTransparency = 0.5,
                         AnchorPoint = Vector2New(0, 0.5),
                         ZIndex = 5,
@@ -8631,7 +8631,7 @@ local Library do
                         end
 
                         if Dropdown.Callback then 
-                            Library:SafeCall(Dropdown.Callback, Dropdown.Value)
+                            Enthusiast:SafeCall(Dropdown.Callback, Dropdown.Value)
                         end
                     end
 
@@ -8696,7 +8696,7 @@ local Library do
                         end
                     end
 
-                    Library:Connect(NewTween.Tween.Completed, function()
+                    Enthusiast:Connect(NewTween.Tween.Completed, function()
                         Debounce = false
                         DropdownItems["OptionHolder"].Instance.Visible = Bool
                     end)
@@ -8709,7 +8709,7 @@ local Library do
                         end
 
                         Dropdown.Value = Option
-                        Library.Flags[Dropdown.Flag] = Option
+                        Enthusiast.Flags[Dropdown.Flag] = Option
 
                         for Index, Value in Option do 
                             local OptionData = Dropdown.Options[Value]
@@ -8731,7 +8731,7 @@ local Library do
                         local OptionData = Dropdown.Options[Option]
 
                         Dropdown.Value = OptionData.Name
-                        Library.Flags[Dropdown.Flag] = OptionData.Name
+                        Enthusiast.Flags[Dropdown.Flag] = OptionData.Name
 
                         for Index, Value in Dropdown.Options do 
                             if Value ~= OptionData then
@@ -8747,7 +8747,7 @@ local Library do
                     end
 
                     if Dropdown.Callback then 
-                        Library:SafeCall(Dropdown.Callback, Dropdown.Value)
+                        Enthusiast:SafeCall(Dropdown.Callback, Dropdown.Value)
                     end
                 end
 
@@ -8766,7 +8766,7 @@ local Library do
                 PlayerItems["NewPlayer"] = Instances:Create("TextButton", {
                     Parent = Items["PlayerHolder"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -8788,7 +8788,7 @@ local Library do
                 PlayerItems["Name"] = Instances:Create("TextLabel", {
                     Parent = PlayerItems["NewPlayer"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     TextTransparency = 0.4000000059604645,
                                         ZIndex = 2,
@@ -8808,7 +8808,7 @@ local Library do
                 PlayerItems["Status"] = Instances:Create("TextLabel", {
                     Parent = PlayerItems["NewPlayer"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                                         ZIndex = 2,
                     TextTransparency = 0.4000000059604645,
@@ -8831,7 +8831,7 @@ local Library do
                 PlayerItems["Team"] = Instances:Create("TextLabel", {
                     Parent = PlayerItems["NewPlayer"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = TeamColor,
                     TextTransparency = 0.4000000059604645,
                     Text = Team,
@@ -8849,7 +8849,7 @@ local Library do
                 })
 
                 if Player == LocalPlayer then
-                    PlayerItems["Status"].Instance.TextColor3 = Library.Theme.Accent
+                    PlayerItems["Status"].Instance.TextColor3 = Enthusiast.Theme.Accent
                     PlayerItems["Status"].Instance.Text = "LocalPlayer"
                     PlayerItems["Status"]:AddToTheme({TextColor3 = "Accent"})
                 end
@@ -8907,7 +8907,7 @@ local Library do
                     end
 
                     if Data.Callback then 
-                        Library:SafeCall(Data.Callback, Playerlist.Player, PlayerData.PlayerStatus.Instance.Text, PlayerData.PlayerTeam.Instance.Text)
+                        Enthusiast:SafeCall(Data.Callback, Playerlist.Player, PlayerData.PlayerStatus.Instance.Text, PlayerData.PlayerTeam.Instance.Text)
                     end
                 end
 
@@ -8938,7 +8938,7 @@ local Library do
 
                     if Value == "Neutral" then
                         Playerlist.Players[Playerlist.Player.Name].PlayerStatus:Tween(nil, {
-                            TextColor3 = Library.Theme["Inactive Text"]
+                            TextColor3 = Enthusiast.Theme["Inactive Text"]
                         })
 
                         Playerlist.Players[Playerlist.Player.Name].PlayerStatus.Instance.Text = "Neutral"
@@ -8956,7 +8956,7 @@ local Library do
                         Playerlist.Players[Playerlist.Player.Name].PlayerStatus.Instance.Text = "Friendly"
                     else
                         Playerlist.Players[Playerlist.Player.Name].PlayerStatus:Tween(nil, {
-                            TextColor3 = Library.Theme["Inactive Text"]
+                            TextColor3 = Enthusiast.Theme["Inactive Text"]
                         })
 
                         Playerlist.Players[Playerlist.Player.Name].PlayerStatus.Instance.Text = "Neutral"
@@ -8968,20 +8968,20 @@ local Library do
                 Playerlist:Add(Value)
             end
 
-            Library:Connect(Players.PlayerRemoving, function(Player)
+            Enthusiast:Connect(Players.PlayerRemoving, function(Player)
                 if Playerlist.Players[Player.Name] then 
                     Playerlist:Remove(Player.Name)
                 end
             end)
 
-            Library:Connect(Players.PlayerAdded, function(Player)
+            Enthusiast:Connect(Players.PlayerAdded, function(Player)
                 Playerlist:Add(Player)
             end)
 
             return Playerlist
         end
 
-        Library.Pages.Section = function(self, Data)
+        Enthusiast.Pages.Section = function(self, Data)
             Data = Data or { }
 
             local Section = {
@@ -9035,7 +9035,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Instances:Create("Frame", {
@@ -9053,7 +9053,7 @@ local Library do
                 Items["Title"] = Instances:Create("TextLabel", {
                     Parent = Items["Topbar"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = Section.Name,
@@ -9125,10 +9125,10 @@ local Library do
             end
 
             Section.Items = Items
-            return setmetatable(Section, Library.Sections)
+            return setmetatable(Section, Enthusiast.Sections)
         end
 
-        Library.Sections.Toggle = function(self, Data)
+        Enthusiast.Sections.Toggle = function(self, Data)
             Data = Data or { }
 
             local Toggle = {
@@ -9137,7 +9137,7 @@ local Library do
                 Section = self,
                 
                 Name = Data.Name or Data.name or "Toggle",
-                Flag = Data.Flag or Data.flag or Library:NextFlag(),
+                Flag = Data.Flag or Data.flag or Enthusiast:NextFlag(),
                 Default = Data.Default or Data.default or false,
                 Callback = Data.Callback or Data.callback or function() end,
                 Tooltip = Data.Tooltip or Data.tooltip or nil,
@@ -9177,7 +9177,7 @@ local Library do
                     Name = Data.Name or Data.name,
                     Default = Data.Default or Data.default,
                     Alpha = Data.Alpha or Data.alpha or 0,
-                    Flag = Data.Flag or Data.flag or Library:NextFlag(),
+                    Flag = Data.Flag or Data.flag or Enthusiast:NextFlag(),
                     Callback = Data.Callback or Data.callback or function() end,
                     
                     Count = Toggle.Count
@@ -9211,7 +9211,7 @@ local Library do
                     Section = self,
 
                     Name = Data.Name or Data.name or "Keybind",
-                    Flag = Data.Flag or Data.flag or Library:NextFlag(),
+                    Flag = Data.Flag or Data.flag or Enthusiast:NextFlag(),
                     Default = Data.Default or Data.default or Enum.KeyCode.RightShift,
                     Callback = Data.Callback or Data.callback or function() end,
                     Mode = Data.Mode or Data.mode or "Toggle",
@@ -9234,7 +9234,7 @@ local Library do
             return Toggle
         end
 
-        Library.Sections.Button = function(self, Data)
+        Enthusiast.Sections.Button = function(self, Data)
             Data = Data or { }
 
             local Button = {
@@ -9251,7 +9251,7 @@ local Library do
                 Items["Button"] = Instances:Create("TextButton", {
                     Parent = Button.Section.Items["Content"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(0, 0, 0),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -9266,11 +9266,11 @@ local Library do
                 Items["Button"]:Tooltip(Button.Tooltip)
 
                 Items["Button"]:OnHover(function()
-                    Items["Button"]:Tween(nil, {BackgroundColor3 = Library:GetLighterColor(Library.Theme.Element, 1.45)})
+                    Items["Button"]:Tween(nil, {BackgroundColor3 = Enthusiast:GetLighterColor(Enthusiast.Theme.Element, 1.45)})
                 end)
     
                 Items["Button"]:OnHoverLeave(function()
-                    Items["Button"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                    Items["Button"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
                 end)    
 
                 Instances:Create("UICorner", {
@@ -9285,13 +9285,13 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["Button"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = Button.Name,
@@ -9306,13 +9306,13 @@ local Library do
 
             function Button:Press()
                 Items["Button"]:ChangeItemTheme({BackgroundColor3 = "Accent"})
-                Items["Button"]:Tween(nil, {BackgroundColor3 = Library.Theme.Accent})
+                Items["Button"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Accent})
 
                 task.wait(0.1)
-                Library:SafeCall(Button.Callback)
+                Enthusiast:SafeCall(Button.Callback)
 
                 Items["Button"]:ChangeItemTheme({BackgroundColor3 = "Element"})
-                Items["Button"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                Items["Button"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
             end
 
             function Button:SetVisibility(Bool)
@@ -9324,7 +9324,7 @@ local Library do
                 Item = Items["Button"]
             }
 
-            local PageSearchData = Library.SearchItems[Button.Page]
+            local PageSearchData = Enthusiast.SearchItems[Button.Page]
 
             if not PageSearchData then
                 return
@@ -9339,7 +9339,7 @@ local Library do
             return Button
         end
 
-        Library.Sections.Slider = function(self, Data)
+        Enthusiast.Sections.Slider = function(self, Data)
             local Slider = { 
                 Window = self.Window,
                 Page = self.Page,
@@ -9349,7 +9349,7 @@ local Library do
                 Min = Data.Min or Data.min or 0,
                 Max = Data.Max or Data.max or 100,
                 Suffix = Data.Suffix or Data.suffix or "",
-                Flag = Data.Flag or Data.flag or Library:NextFlag(),
+                Flag = Data.Flag or Data.flag or Enthusiast:NextFlag(),
                 Default = Data.Default or Data.default or 0,
                 Decimals = Data.Decimals or Data.decimals or 1,
                 Tooltip = Data.Tooltip or Data.tooltip or nil,
@@ -9376,7 +9376,7 @@ local Library do
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["Slider"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = Slider.Name,
@@ -9404,11 +9404,11 @@ local Library do
                 })  Items["RealSlider"]:AddToTheme({BackgroundColor3 = "Element"})
 
                 Items["RealSlider"]:OnHover(function()
-                    Items["RealSlider"]:Tween(nil, {BackgroundColor3 = Library:GetLighterColor(Library.Theme.Element, 1.45)})
+                    Items["RealSlider"]:Tween(nil, {BackgroundColor3 = Enthusiast:GetLighterColor(Enthusiast.Theme.Element, 1.45)})
                 end)
     
                 Items["RealSlider"]:OnHoverLeave(function()
-                    Items["RealSlider"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                    Items["RealSlider"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
                 end)   
 
                 Instances:Create("UICorner", {
@@ -9423,7 +9423,7 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Items["Accent"] = Instances:Create("Frame", {
@@ -9448,13 +9448,13 @@ local Library do
                     Rotation = 84,
                     Color = RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, FromRGB(211, 211, 211))}
                 }):AddToTheme({Color = function()
-                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Library.Theme["Dark Gradient"])}
+                    return RGBSequence{RGBSequenceKeypoint(0, FromRGB(255, 255, 255)), RGBSequenceKeypoint(1, Enthusiast.Theme["Dark Gradient"])}
                 end})
 
                 Items["Value"] = Instances:Create("TextLabel", {
                     Parent = Items["Slider"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = "",
@@ -9475,15 +9475,15 @@ local Library do
             end
 
             function Slider:Set(Value)
-                Slider.Value = Library:Round(MathClamp(Value, Slider.Min, Slider.Max), Slider.Decimals)
+                Slider.Value = Enthusiast:Round(MathClamp(Value, Slider.Min, Slider.Max), Slider.Decimals)
 
-                Library.Flags[Slider.Flag] = Slider.Value
+                Enthusiast.Flags[Slider.Flag] = Slider.Value
 
                 Items["Accent"]:Tween(TweenInfo.new(0.21, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2New((Slider.Value - Slider.Min) / (Slider.Max - Slider.Min), 0, 1, 0)})
                 Items["Value"].Instance.Text = StringFormat("%s%s", tostring(Slider.Value), Slider.Suffix)
 
                 if Slider.Callback then 
-                    Library:SafeCall(Slider.Callback, Slider.Value)
+                    Enthusiast:SafeCall(Slider.Callback, Slider.Value)
                 end
             end
 
@@ -9498,7 +9498,7 @@ local Library do
                 Item = Items["Slider"]
             }
 
-            local PageSearchData = Library.SearchItems[Slider.Page]
+            local PageSearchData = Enthusiast.SearchItems[Slider.Page]
 
             if not PageSearchData then 
                 return 
@@ -9532,7 +9532,7 @@ local Library do
                 end
             end)
 
-            Library:Connect(UserInputService.InputChanged, function(Input)
+            Enthusiast:Connect(UserInputService.InputChanged, function(Input)
                 if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
                     if Slider.Sliding then
                         local SizeX = (Input.Position.X - Items["RealSlider"].Instance.AbsolutePosition.X) / Items["RealSlider"].Instance.AbsoluteSize.X
@@ -9547,14 +9547,14 @@ local Library do
                 Slider:Set(Slider.Default)
             end
 
-            Library.SetFlags[Slider.Flag] = function(Value)
+            Enthusiast.SetFlags[Slider.Flag] = function(Value)
                 Slider:Set(Value)
             end
 
             return Slider
         end
 
-        Library.Sections.Dropdown = function(self, Data)
+        Enthusiast.Sections.Dropdown = function(self, Data)
             Data = Data or { }
 
             local Dropdown = {
@@ -9563,7 +9563,7 @@ local Library do
                 Section = self,
 
                 Name = Data.Name or Data.name or "Dropdown",
-                Flag = Data.Flag or Data.flag or Library:NextFlag(),
+                Flag = Data.Flag or Data.flag or Enthusiast:NextFlag(),
                 Default = Data.Default or Data.default or nil,
                 Items = Data.Items or Data.items or { "One", "Two", "Three" },
                 Callback = Data.Callback or Data.callback or function() end,
@@ -9614,7 +9614,7 @@ local Library do
             return Dropdown
         end
 
-        Library.Sections.Label = function(self, Text, Alignment, Tooltip)
+        Enthusiast.Sections.Label = function(self, Text, Alignment, Tooltip)
             local Label = {
                 Window = self.Window,
                 Page = self.Page,
@@ -9643,7 +9643,7 @@ local Library do
 
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["Label"].Instance,
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     ZIndex = 2,
@@ -9705,7 +9705,7 @@ local Library do
                     Name = Data.Name or Data.name,
                     Default = Data.Default or Data.default,
                     Alpha = Data.Alpha or Data.alpha or 0,
-                    Flag = Data.Flag or Data.flag or Library:NextFlag(),
+                    Flag = Data.Flag or Data.flag or Enthusiast:NextFlag(),
                     Callback = Data.Callback or Data.callback or function() end,
                     
                     Count = Label.Count
@@ -9738,7 +9738,7 @@ local Library do
                     Section = self,
 
                     Name = Data.Name or Data.name or "Keybind",
-                    Flag = Data.Flag or Data.flag or Library:NextFlag(),
+                    Flag = Data.Flag or Data.flag or Enthusiast:NextFlag(),
                     Default = Data.Default or Data.default or Enum.KeyCode.RightShift,
                     Callback = Data.Callback or Data.callback or function() end,
                     Mode = Data.Mode or Data.mode or "Toggle",
@@ -9762,7 +9762,7 @@ local Library do
                 Item = Items["Label"]
             }
 
-            local PageSearchData = Library.SearchItems[Label.Page]
+            local PageSearchData = Enthusiast.SearchItems[Label.Page]
 
             if not PageSearchData then 
                 return 
@@ -9773,7 +9773,7 @@ local Library do
             return Label 
         end
 
-        Library.Sections.Textbox = function(self, Data)
+        Enthusiast.Sections.Textbox = function(self, Data)
             Data = Data or { }
 
             local Textbox = {
@@ -9783,7 +9783,7 @@ local Library do
 
                 Name = Data.Name or Data.name or "Textbox",
                 Placeholder = Data.Placeholder or Data.placeholder or "...",
-                Flag = Data.Flag or Data.flag or Library:NextFlag(),
+                Flag = Data.Flag or Data.flag or Enthusiast:NextFlag(),
                 Default = Data.Default or Data.default or "",
                 Callback = Data.Callback or Data.callback or function() end,
                 Tooltip = Data.Tooltip or Data.tooltip or nil,
@@ -9808,7 +9808,7 @@ local Library do
                 Items["Text"] = Instances:Create("TextLabel", {
                     Parent = Items["Textbox"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
                     Text = Textbox.Name,
@@ -9834,11 +9834,11 @@ local Library do
                 })  Items["Background"]:AddToTheme({BackgroundColor3 = "Element"})
 
                 Items["Background"]:OnHover(function()
-                    Items["Background"]:Tween(nil, {BackgroundColor3 = Library:GetLighterColor(Library.Theme.Element, 1.45)})
+                    Items["Background"]:Tween(nil, {BackgroundColor3 = Enthusiast:GetLighterColor(Enthusiast.Theme.Element, 1.45)})
                 end)
     
                 Items["Background"]:OnHoverLeave(function()
-                    Items["Background"]:Tween(nil, {BackgroundColor3 = Library.Theme.Element})
+                    Items["Background"]:Tween(nil, {BackgroundColor3 = Enthusiast.Theme.Element})
                 end)   
 
                 Instances:Create("UICorner", {
@@ -9857,7 +9857,7 @@ local Library do
                 Items["Input"] = Instances:Create("TextBox", {
                     Parent = Items["Background"].Instance,
                     Name = "\0",
-                    FontFace = Library.Font,
+                    FontFace = Enthusiast.Font,
                     CursorPosition = -1,
                     TextColor3 = FromRGB(255, 255, 255),
                     BorderColor3 = FromRGB(0, 0, 0),
@@ -9885,13 +9885,13 @@ local Library do
             function Textbox:Set(Value)
                 Items["Input"].Instance.Text = tostring(Value)
                 Textbox.Value = Value
-                Library.Flags[Textbox.Flag] = Value
+                Enthusiast.Flags[Textbox.Flag] = Value
 
                 Items["Input"]:ChangeItemTheme({TextColor3 = "Text", PlaceholderColor3 = "Text Inactive"})
-                Items["Input"]:Tween(nil, {TextColor3 = Library.Theme.Text})
+                Items["Input"]:Tween(nil, {TextColor3 = Enthusiast.Theme.Text})
 
                 if Textbox.Callback then
-                    Library:SafeCall(Textbox.Callback, Value)
+                    Enthusiast:SafeCall(Textbox.Callback, Value)
                 end
             end
 
@@ -9910,7 +9910,7 @@ local Library do
                 Item = Items["Textbox"]
             }
 
-            local PageSearchData = Library.SearchItems[Textbox.Page]
+            local PageSearchData = Enthusiast.SearchItems[Textbox.Page]
 
             if not PageSearchData then 
                 return 
@@ -9920,7 +9920,7 @@ local Library do
 
             Items["Input"]:Connect("Focused", function()
                 Items["Input"]:ChangeItemTheme({TextColor3 = "Accent", PlaceholderColor3 = "Text Inactive"})
-                Items["Input"]:Tween(nil, {TextColor3 = Library.Theme.Accent})
+                Items["Input"]:Tween(nil, {TextColor3 = Enthusiast.Theme.Accent})
             end)
 
             Items["Input"]:Connect("FocusLost", function()
@@ -9931,7 +9931,7 @@ local Library do
                 Textbox:Set(Textbox.Default)
             end
 
-            Library.SetFlags[Textbox.Flag] = function(Value)
+            Enthusiast.SetFlags[Textbox.Flag] = function(Value)
                 Textbox:Set(Value)
             end
 
@@ -9939,15 +9939,15 @@ local Library do
         end
     end
 
-    Library.Init = function(self)
-        local AutoloadConfig = readfile(Library.Folders.Directory .. "/AutoLoadConfig (do not modify this).json")
-        local AutoloadTheme = readfile(Library.Folders.Directory .. "/AutoLoadTheme (do not modify this).json")
+    Enthusiast.Init = function(self)
+        local AutoloadConfig = readfile(Enthusiast.Folders.Directory .. "/AutoLoadConfig (do not modify this).json")
+        local AutoloadTheme = readfile(Enthusiast.Folders.Directory .. "/AutoLoadTheme (do not modify this).json")
         
         if AutoloadConfig ~= "" then
-            local Success, Result = Library:LoadConfig(AutoloadConfig)
+            local Success, Result = Enthusiast:LoadConfig(AutoloadConfig)
 
             if Success then 
-                Library:Notification({
+                Enthusiast:Notification({
                     Name = "Success",
                     Description = "Successfully loaded autoload config",
                     Duration = 5,
@@ -9955,7 +9955,7 @@ local Library do
                     IconColor = Color3.fromRGB(52, 255, 164)
                 })
             else
-                Library:Notification({
+                Enthusiast:Notification({
                     Name = "Error!",
                     Description = "Failed to load autoload config, error:\n" .. Result,
                     Duration = 5,
@@ -9966,10 +9966,10 @@ local Library do
         end
 
         if AutoloadTheme ~= "" then
-            local Success, Result = Library:LoadTheme(AutoloadTheme)
+            local Success, Result = Enthusiast:LoadTheme(AutoloadTheme)
 
             if Success then 
-                Library:Notification({
+                Enthusiast:Notification({
                     Name = "Success",
                     Description = "Successfully loaded autoload theme",
                     Duration = 5,
@@ -9977,7 +9977,7 @@ local Library do
                     IconColor = Color3.fromRGB(52, 255, 164)
                 })
             else
-                Library:Notification({
+                Enthusiast:Notification({
                     Name = "Error!",
                     Description = "Failed to load autoload theme, error:\n" .. Result,
                     Duration = 5,
@@ -9989,5 +9989,5 @@ local Library do
     end
 end 
 
-getgenv().Library = Library
-return Library
+getgenv().Enthusiast = Enthusiast
+return Enthusiast
