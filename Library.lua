@@ -7538,7 +7538,7 @@ local Enthusiast do
                     end)
                 end
 
-                UserInputService.MouseIconEnabled = false
+                UserInputService.MouseIconEnabled = true
 
                 Items["MouseImage"] = Instances:Create("ImageLabel", {
                     Parent = Enthusiast.Holder.Instance,
@@ -7615,7 +7615,7 @@ local Enthusiast do
 
                     if Window.IsOpen then
                         Items["MouseImage"].Instance.Visible = true
-                        UserInputService.MouseIconEnabled = false 
+                        UserInputService.MouseIconEnabled = true 
                     else
                         Items["MouseImage"].Instance.Visible = false
                         UserInputService.MouseIconEnabled = true 
