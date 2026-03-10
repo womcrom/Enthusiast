@@ -2134,7 +2134,7 @@ local Enthusiast do
         Enthusiast = nil 
         getgenv().Enthusiast = nil
 
-        UserInputService.MouseIconEnabled = true
+        --UserInputService.MouseIconEnabled = true
     end
 
     Enthusiast.GetImage = function(self, Image)
@@ -7538,7 +7538,7 @@ local Enthusiast do
                     end)
                 end
 
-                UserInputService.MouseIconEnabled = true
+                --UserInputService.MouseIconEnabled = true
 
                 Items["MouseImage"] = Instances:Create("ImageLabel", {
                     Parent = Enthusiast.Holder.Instance,
@@ -7615,10 +7615,10 @@ local Enthusiast do
 
                     if Window.IsOpen then
                         Items["MouseImage"].Instance.Visible = true
-                        UserInputService.MouseIconEnabled = true 
+                        --UserInputService.MouseIconEnabled = true 
                     else
                         Items["MouseImage"].Instance.Visible = false
-                        UserInputService.MouseIconEnabled = true 
+                        --UserInputService.MouseIconEnabled = true 
                     end
                 end)
             end
