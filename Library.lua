@@ -2134,7 +2134,7 @@ local Enthusiast do
         Enthusiast = nil 
         getgenv().Enthusiast = nil
 
-        UserInputService.MouseIconEnabled = true
+        UserInputService.MouseIconEnabled = false
     end
 
     Enthusiast.GetImage = function(self, Image)
@@ -7538,7 +7538,7 @@ local Enthusiast do
                     end)
                 end
 
-                UserInputService.MouseIconEnabled = true
+                UserInputService.MouseIconEnabled = false
 
                 Items["MouseImage"] = Instances:Create("ImageLabel", {
                     Parent = Enthusiast.Holder.Instance,
@@ -7551,7 +7551,6 @@ local Enthusiast do
                     Size = UDim2New(0, 20, 0, 20),
                     ZIndex = 99999,
                     BorderSizePixel = 0,
-					Visible = false,
                     BackgroundColor3 = FromRGB(255, 255, 255)
                 })  Items["MouseImage"]:AddToTheme({ImageColor3 = "Accent"})
 
@@ -7610,19 +7609,11 @@ local Enthusiast do
                     end
                 end
 
-                Enthusiast:Connect(NewTween.Tween.Completed, function()
-                    Debounce = false
-                    Items["MainFrame"].Instance.Visible = Bool
-
-                    if Window.IsOpen then
-                        Items["MouseImage"].Instance.Visible = true
-                        UserInputService.MouseIconEnabled = true 
-                    else
-                        Items["MouseImage"].Instance.Visible = false
-                        UserInputService.MouseIconEnabled = true 
-                    end
-                end)
-            end
+				Enthusiast:Connect(NewTween.Tween.Completed, function()
+				    Debounce = false
+				    Items["MainFrame"].Instance.Visible = Bool
+				    Items["MouseImage"].Instance.Visible = false
+				end)
 
             function Window:SetText(Text)
                 Items["Title"].Instance.Text = Text
