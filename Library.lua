@@ -2134,7 +2134,6 @@ local Enthusiast do
         Enthusiast = nil 
         getgenv().Enthusiast = nil
 
-        --UserInputService.MouseIconEnabled = true
     end
 
     Enthusiast.GetImage = function(self, Image)
@@ -7538,28 +7537,6 @@ local Enthusiast do
                     end)
                 end
 
-                --UserInputService.MouseIconEnabled = true
-
-                Items["MouseImage"] = Instances:Create("ImageLabel", {
-                    Parent = Enthusiast.Holder.Instance,
-                    Name = "\0",
-                    ScaleType = Enum.ScaleType.Fit,
-                    BorderColor3 = FromRGB(0, 0, 0),
-                    Image = "rbxassetid://136489814131946",
-                    BackgroundTransparency = 1,
-                    Position = UDim2New(0, 0, 0, 0),
-                    Size = UDim2New(0, 20, 0, 20),
-                    ZIndex = 99999,
-                    BorderSizePixel = 0,
-                    BackgroundColor3 = FromRGB(255, 255, 255)
-                })  Items["MouseImage"]:AddToTheme({ImageColor3 = "Accent"})
-
-                Enthusiast:Connect(RunService.RenderStepped, function()
-                    local MouseLocation = UserInputService:GetMouseLocation() 
-                    Items["MouseImage"].Instance.Position = UDim2New(0, MouseLocation.X - 1, 0, MouseLocation.Y - 56)
-                end)
-            end
-
             local Debounce = false 
             local OldSizes = { }
 
@@ -7609,19 +7586,11 @@ local Enthusiast do
                     end
                 end
 
-                Enthusiast:Connect(NewTween.Tween.Completed, function()
-                    Debounce = false
-                    Items["MainFrame"].Instance.Visible = Bool
-
-                    if Window.IsOpen then
-                        Items["MouseImage"].Instance.Visible = true
-                        --UserInputService.MouseIconEnabled = true 
-                    else
-                        Items["MouseImage"].Instance.Visible = false
-                        --UserInputService.MouseIconEnabled = true 
-                    end
-                end)
-            end
+				Enthusiast:Connect(NewTween.Tween.Completed, function()
+				    Debounce = false
+				    Items["MainFrame"].Instance.Visible = Bool
+				    Items["MouseImage"].Instance.Visible = false
+				end)
 
             function Window:SetText(Text)
                 Items["Title"].Instance.Text = Text
