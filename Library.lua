@@ -2134,7 +2134,7 @@ local Enthusiast do
         Enthusiast = nil 
         getgenv().Enthusiast = nil
 
-        UserInputService.MouseIconEnabled = false
+        --UserInputService.MouseIconEnabled = true
     end
 
     Enthusiast.GetImage = function(self, Image)
@@ -7538,7 +7538,7 @@ local Enthusiast do
                     end)
                 end
 
-                UserInputService.MouseIconEnabled = false
+                --UserInputService.MouseIconEnabled = true
 
                 Items["MouseImage"] = Instances:Create("ImageLabel", {
                     Parent = Enthusiast.Holder.Instance,
@@ -7609,11 +7609,19 @@ local Enthusiast do
                     end
                 end
 
-				Enthusiast:Connect(NewTween.Tween.Completed, function()
-				    Debounce = false
-				    Items["MainFrame"].Instance.Visible = Bool
-				    Items["MouseImage"].Instance.Visible = false
-				end)
+                Enthusiast:Connect(NewTween.Tween.Completed, function()
+                    Debounce = false
+                    Items["MainFrame"].Instance.Visible = Bool
+
+                    if Window.IsOpen then
+                        Items["MouseImage"].Instance.Visible = false
+                        --UserInputService.MouseIconEnabled = true 
+                    else
+                        Items["MouseImage"].Instance.Visible = false
+                        --UserInputService.MouseIconEnabled = true 
+                    end
+                end)
+            end
 
             function Window:SetText(Text)
                 Items["Title"].Instance.Text = Text
