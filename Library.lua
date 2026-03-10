@@ -7538,6 +7538,29 @@ local Enthusiast do
                     end)
                 end
 
+                UserInputService.MouseIconEnabled = true
+
+                Items["MouseImage"] = Instances:Create("ImageLabel", {
+                    Parent = Enthusiast.Holder.Instance,
+                    Name = "\0",
+                    ScaleType = Enum.ScaleType.Fit,
+                    BorderColor3 = FromRGB(0, 0, 0),
+                    Image = "rbxassetid://136489814131946",
+                    BackgroundTransparency = 1,
+                    Position = UDim2New(0, 0, 0, 0),
+                    Size = UDim2New(0, 20, 0, 20),
+                    ZIndex = 99999,
+                    BorderSizePixel = 0,
+					Visible = false,
+                    BackgroundColor3 = FromRGB(255, 255, 255)
+                })  Items["MouseImage"]:AddToTheme({ImageColor3 = "Accent"})
+
+                Enthusiast:Connect(RunService.RenderStepped, function()
+                    local MouseLocation = UserInputService:GetMouseLocation() 
+                    Items["MouseImage"].Instance.Position = UDim2New(0, MouseLocation.X - 1, 0, MouseLocation.Y - 56)
+                end)
+            end
+
             local Debounce = false 
             local OldSizes = { }
 
